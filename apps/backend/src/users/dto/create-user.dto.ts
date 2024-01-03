@@ -2,4 +2,5 @@
 // then it can be imported as we would a type
 export class CreateUserDto {
   name: string;
+  type: 'customer' | 'admin';
 }
