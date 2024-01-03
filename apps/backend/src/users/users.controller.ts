@@ -15,6 +15,8 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
+import { UseGuards } from '@nestjs/common/decorators';
+import { PermissionGuard } from 'src/permission/permission.guard';
 
 // instantiate under the hood in Nest is kinda like this:
 //    const service = new UsersService();
@@ -24,6 +26,7 @@ import { UsersService } from './users.service';
 
 // here 'users' is the common path of the API
 @Controller('users')
+@UseGuards(PermissionGuard) // this cover any method inside the controller
 export class UsersController {
   // instead of instantiate the service for every method like for getSingleUSer below -
   // we can do it only once for the entire controller with a constructor - its like importing it once instead that each time..
