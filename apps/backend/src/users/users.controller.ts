@@ -3,10 +3,14 @@ import {
   Controller,
   Delete,
   Get,
+  ImATeapotException,
+  NotFoundException,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -43,69 +47,44 @@ export class UsersController {
   @Get(':id')
   // The @param decorator extracts the params property from the req object and populates the decorated parameter with the value of params
   // it's kind of like passing it as a props in React
-  getUser(@Query('id') id: number) {
-    return this.usersService.getUser(id);
+  getUser(@Param('id') id: string) {
+    try {
+      return this.usersService.getUser(+id);
+      // the + switch to the type to number
+    } catch (err) {
+      throw new NotFoundException();
+      // this error is throw in the browser
+    }
   }
 
   // POST /Users
-  // Since we are creating a new user, we need to also pass a @Body
+  // Since we are creating a new user, we need to also pass a @Body:
+  //    {
+  //    "name": "tom",
+  //    "type": "manager"
+  //    }
   @Post()
-  createUser(@Body() createUserDto: CreateUserDto) {
-    return {
-      name: createUserDto.name,
-    };
+  // the Pipe here functions kinda like Zod in NEXT.js - validating the user input on the client side - it gives back a statusCode and a message
+  createUser(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
+    return this.usersService.createUser(createUserDto);
   }
 
   // PUT /users/:id --> { ... }
   // also the PUT needs a Body
   @Put(':id')
-  updateUser(@Param('id') id: string, @Body() UpdateUserDto: UpdateUserDto) {
-    return {
-      id,
-      name: UpdateUserDto,
-    };
+  // rather then using hte "+" to transform the type in a number as above in the @Get(':id') example
+  // we can use a Pipe - in this way any input will be transformed directly in a number
+  // and we right after we can already define it with a type "number"
+  updateUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() UpdateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.updateUser(+id, UpdateUserDto);
   }
 
   // DELETE /users/:id
   @Delete(':id')
-  deleteUser(@Param('id') id: string) {
-    return {
-      id,
-    };
+  deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.deleteUser(+id);
   }
 }
-
-// import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-// import { UsersService } from './users.service';
-// import { CreateUserDto } from './dto/create-user.dto';
-// import { UpdateUserDto } from './dto/update-user.dto';
-
-// @Controller('users')
-// export class UsersController {
-//   constructor(private readonly usersService: UsersService) {}
-
-//   @Post()
-//   create(@Body() createUserDto: CreateUserDto) {
-//     return this.usersService.create(createUserDto);
-//   }
-
-//   @Get()
-//   findAll() {
-//     return this.usersService.findAll();
-//   }
-
-//   @Get(':id')
-//   findOne(@Param('id') id: string) {
-//     return this.usersService.findOne(+id);
-//   }
-
-//   @Patch(':id')
-//   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-//     return this.usersService.update(+id, updateUserDto);
-//   }
-
-//   @Delete(':id')
-//   remove(@Param('id') id: string) {
-//     return this.usersService.remove(+id);
-//   }
-// }
