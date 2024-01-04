@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  ImATeapotException,
   NotFoundException,
   Param,
   ParseIntPipe,
@@ -82,12 +81,12 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() UpdateUserDto: UpdateUserDto,
   ) {
-    return this.usersService.updateUser(+id, UpdateUserDto);
+    return this.usersService.updateUser(id, UpdateUserDto);
   }
 
   // DELETE /users/:id
   @Delete(':id')
   deleteUser(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.deleteUser(+id);
+    return this.usersService.deleteUser(id);
   }
 }

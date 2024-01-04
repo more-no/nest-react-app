@@ -2,17 +2,25 @@
   "name": "nest-react-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
-  "author": "",
   "license": "ISC",
+  "author": "",
+  "main": "index.js",
   "workspaces": [
     "apps/*"
   ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "start": "node apps/backend/dist/main",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@nestjs/serve-static": "^4.0.0",
+    "backend": "workspace:^"
+  },
   "devDependencies": {
-    "pnpm": "^8.13.1"
+    "pnpm": "^8.13.1",
+    "turbo": "^1.11.2"
   }
 }
