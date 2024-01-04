@@ -43,3 +43,4 @@ migration_lock.toml
 
 # Various
 NOTES.BACKEND.md
+NOTES.DATABASE.md
