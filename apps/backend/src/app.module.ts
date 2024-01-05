@@ -12,14 +12,13 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../..', 'frontend', 'dist'),
-    }),
-    // GraphQLModule.forRoot<ApolloDriverConfig>({
-    //   driver: ApolloDriver,
-    //   playground: false,
-    //   plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '../..', 'frontend', 'dist'),
     // }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      typePaths: ['./**/*.graphql'], // typePaths is for schema-first approach
+    }),
     UsersModule,
   ],
   controllers: [AppController],
