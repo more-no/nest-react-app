@@ -7,7 +7,6 @@ async function bootstrap() {
   // here we simply start up our HTTP listener, which lets the application await inbound HTTP requests.
   const app = await NestFactory.create(AppModule);
   // i set a GlobalPrefix that is identical to the one in 'vite.config.ts' for the path of the backend server
-  app.setGlobalPrefix('api');
-  await app.listen(5000);
+  app.listen(3000);
 }
 bootstrap();
