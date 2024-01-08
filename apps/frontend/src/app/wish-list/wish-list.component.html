@@ -4,22 +4,10 @@
 
 <ng-template #showWishes>
   <ul class="wish-list">
-    <li *ngFor="let item of wishes; index as ii">
-      <div class="form-check">
-        <label class="form-check-label">
-          <!-- [checked]="item.isComplete" : Binding Data to Properties and Attributes -->
-          <input
-            class="checkbox"
-            type="checkbox"
-            [checked]="item.isComplete"
-            [attr.data-index]="ii"
-            (click)="toggleItem(item)"
-          />
-          {{ item.wishText }}
-          <!-- [attr.--] : transform the generic ii index into a number -->
-          <!-- (click) similar to the onClick in React, we define the function in app.component.ts -->
-        </label>
-      </div>
-    </li>
+    <wish-list-item
+      *ngFor="let wish of wishes"
+      [wishText]="wish.wishText"
+      [(fulfilled)]="wish.isComplete"
+    ></wish-list-item>
   </ul>
 </ng-template>

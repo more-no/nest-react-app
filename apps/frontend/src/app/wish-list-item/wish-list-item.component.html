@@ -1,0 +1,14 @@
+<li>
+  <div class="form-check">
+    <label class="form-check-label">
+      <!-- [checked]="item.isComplete" : Binding Data to Properties and Attributes -->
+      <input
+        class="checkbox"
+        type="checkbox"
+        [checked]="fulfilled"
+        (click)="toggleFulfilled()"
+      />
+      {{ wishText }}
+    </label>
+  </div>
+</li>

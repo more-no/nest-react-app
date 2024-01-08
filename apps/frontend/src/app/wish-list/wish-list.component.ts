@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { WishItem } from '../../shared/models/wishItem';
 
 // ng create a component adding "app-" as suffix to the the name
@@ -12,11 +12,4 @@ export class WishListComponent {
   // we need to declare "wishes"
   // we need to specify that this is an input (extra passage from props in React)
   @Input() wishes: WishItem[] = [];
-
-  ngOnInit(): void {}
-
-  toggleItem(item: WishItem) {
-    item.isComplete = !item.isComplete;
-    console.log(item);
-  }
 }
