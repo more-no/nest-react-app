@@ -1,5 +1,8 @@
 <div class="container">
-  <form class="row mt-3 gx-3 gy-2 align-items-center justify-content-center">
+  <add-wish-form (addWish)="items.push($event)"> </add-wish-form>
+
+  <!-- substitute by the component above -->
+  <!-- <form class="row mt-3 gx-3 gy-2 align-items-center justify-content-center">
     <div class="col-sm-6">
       <label class="visually-hidden" for="specificSizeInputName">Wish</label>
       <input
@@ -18,7 +21,7 @@
         Add Wish
       </button>
     </div>
-  </form>
+  </form> -->
 
   <div class="row mt-3">
     <div class="col-sm-2">
@@ -31,35 +34,7 @@
   </div>
 
   <div class="'row mt-3">
-    <div *ngIf="visibleItems.length === 0; else showItems">
-      There are no wishes to display
-    </div>
-
-    <!-- we can also avoid the "then" and put this text inside the first <dev> as a first condition
-      <ng-template #noItems>
-      There are no wishes to display
-      </ng-template> -->
-
-    <ng-template #showItems>
-      <ul class="wish-list">
-        <li *ngFor="let item of visibleItems; index as ii">
-          <div class="form-check">
-            <label class="form-check-label">
-              <!-- [checked]="item.isComplete" : Binding Data to Properties and Attributes -->
-              <input
-                class="checkbox"
-                type="checkbox"
-                [checked]="item.isComplete"
-                [attr.data-index]="ii"
-                (click)="toggleItem(item)"
-              />
-              {{ item.wishText }}
-              <!-- [attr.--] : transform the generic ii index into a number -->
-              <!-- (click) similar to the onClick in React, we define the function in app.component.ts -->
-            </label>
-          </div>
-        </li>
-      </ul>
-    </ng-template>
+    <!-- all this part of code is moved into wish-list.component.html - we generate this component with "ng generate component wish-list" -->
+    <wish-list [wishes]="visibleItems"> </wish-list>
   </div>
 </div>

@@ -27,7 +27,8 @@ export class AppComponent {
   // to work with the getter and the "filters" array we change the Type to number
   listFilter: number = 0;
 
-  newWishText = '';
+  // moved to add-wish-component.ts
+  // newWishText = '';
 
   get visibleItems(): WishItem[] {
     return this.items.filter(filters[this.listFilter]);
@@ -47,12 +48,13 @@ export class AppComponent {
   //   }
   // }
 
-  addNewWish() {
-    // todo : add wish to the items array
-    this.items.push(new WishItem(this.newWishText));
-    // clear the text-box
-    this.newWishText = '';
-  }
+  // then moved into add-wish-component.ts
+  // addNewWish() {
+  //   // todo : add wish to the items array
+  //   this.items.push(new WishItem(this.newWishText));
+  //   // clear the text-box
+  //   this.newWishText = '';
+  // }
 
   //  ===>    we moved this logic inside the getter visibleItems
   //  visibleItems : WishItem[] = this.items;
@@ -68,8 +70,9 @@ export class AppComponent {
   // }
 
   // here we can add the functions we need as methods
-  toggleItem(item: WishItem) {
-    item.isComplete = !item.isComplete;
-    console.log(item);
-  }
+  // then moved to the wish-list.component.ts
+  // toggleItem(item: WishItem) {
+  //   item.isComplete = !item.isComplete;
+  //   console.log(item);
+  // }
 }
