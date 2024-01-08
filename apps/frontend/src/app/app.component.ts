@@ -14,10 +14,12 @@ export class AppComponent {
     new WishItem('Find grass that cuts itself'),
   ];
 
-  filter: any = () => {};
+  // this is simplified with the two-way binding in the app.component.html in wish-filter
+  // filter: any = () => {};
+  filter: any;
 
   // moved directly in app.component.html
-  get visibleItems(): WishItem[] {
-    return this.items.filter(this.filter);
-  }
+  // get visibleItems(): WishItem[] {
+  //   return this.items.filter(this.filter);
+  // }
 }

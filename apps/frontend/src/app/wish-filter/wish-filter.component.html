@@ -1,8 +1,9 @@
 <div class="col-sm-2">
+  <!-- this [(ngModel)] is two-way binding, so its class used both @output and @input  -->
   <select
     class="form-select"
     [(ngModel)]="listFilter"
-    (ngModelChange)="changeFilter($event)"
+    (ngModelChange)="updateFilter($event)"
   >
     <option value="0">All</option>
     <option value="1">Unfulfilled</option>

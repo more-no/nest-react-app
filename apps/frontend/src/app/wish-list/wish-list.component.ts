@@ -13,6 +13,8 @@ export class WishListComponent {
   // we need to specify that this is an input (extra passage from props in React)
   @Input() wishes: WishItem[] = [];
 
+  ngOnInit(): void {}
+
   toggleItem(item: WishItem) {
     item.isComplete = !item.isComplete;
     console.log(item);
