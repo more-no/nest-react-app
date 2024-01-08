@@ -2,11 +2,6 @@
   There are no wishes to display
 </div>
 
-<!-- we can also avoid the "then" and put this text inside the first <dev> as a first condition
-  <ng-template #noWishes>
-  There are no wishes to display
-  </ng-template> -->
-
 <ng-template #showWishes>
   <ul class="wish-list">
     <li *ngFor="let item of wishes; index as ii">

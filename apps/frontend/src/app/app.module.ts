@@ -6,11 +6,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WishListComponent } from './wish-list/wish-list.component';
 import { AddWishFormComponent } from './add-wish-form/add-wish-form.component';
+import { WishFilterComponent } from './wish-filter/wish-filter.component';
 
 // AppComponent is the entry point of our Module
 
 @NgModule({
-  declarations: [AppComponent, WishListComponent, AddWishFormComponent],
+  declarations: [AppComponent, WishListComponent, AddWishFormComponent, WishFilterComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
