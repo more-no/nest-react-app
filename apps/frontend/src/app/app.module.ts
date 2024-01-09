@@ -12,7 +12,13 @@ import { WishListItemComponent } from './wish-list-item/wish-list-item.component
 // AppComponent is the entry point of our Module
 
 @NgModule({
-  declarations: [AppComponent, WishListComponent, AddWishFormComponent, WishFilterComponent, WishListItemComponent],
+  declarations: [
+    AppComponent,
+    WishListComponent,
+    AddWishFormComponent,
+    WishFilterComponent,
+    WishListItemComponent,
+  ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
