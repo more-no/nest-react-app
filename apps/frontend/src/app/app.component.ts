@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { WishItem } from '../shared/models/wishItem';
+import events from '../shared/services/EventService';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,12 @@ export class AppComponent {
     new WishItem('Get coffee', true),
     new WishItem('Find grass that cuts itself'),
   ];
+
+  constructor() {
+    events.listen('removeWish', (wish: any) => {
+      console.log(wish);
+    });
+  }
 
   // this is simplified with the two-way binding in the app.component.html in wish-filter
   // filter: any = () => {};

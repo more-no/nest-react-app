@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { WishItem } from '../../shared/models/wishItem';
+import events from '../../shared/services/EventService';
 
 @Component({
   selector: 'wish-list-item',
@@ -12,6 +13,16 @@ export class WishListItemComponent {
 
   @Input() fulfilled!: boolean;
   @Output() fulfilledChange = new EventEmitter<boolean>();
+
+  get cssClasses() {
+    // return this.fulfilled ? ['strikeout', 'text-muted'] : [];
+    // below we try using an object instead of an array
+    return { 'strikeout text-muted': this.fulfilled };
+  }
+
+  removeWish() {
+    events.emit('removeWish', this.wishText);
+  }
 
   toggleFulfilled() {
     this.fulfilled = !this.fulfilled;
