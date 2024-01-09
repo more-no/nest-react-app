@@ -17,7 +17,8 @@ export class AppComponent {
 
   constructor() {
     events.listen('removeWish', (wish: any) => {
-      console.log(wish);
+      let index = this.items.indexOf(wish);
+      this.items.splice(index, 1);
     });
   }
 

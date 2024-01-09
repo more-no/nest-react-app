@@ -9,23 +9,19 @@ import events from '../../shared/services/EventService';
 })
 export class WishListItemComponent {
   // bang operator => not null property
-  @Input() wishText!: string;
-
-  @Input() fulfilled!: boolean;
-  @Output() fulfilledChange = new EventEmitter<boolean>();
+  @Input() wish!: WishItem;
 
   get cssClasses() {
     // return this.fulfilled ? ['strikeout', 'text-muted'] : [];
     // below we try using an object instead of an array
-    return { 'strikeout text-muted': this.fulfilled };
+    return { 'strikeout text-muted': this.wish.isComplete };
   }
 
   removeWish() {
-    events.emit('removeWish', this.wishText);
+    events.emit('removeWish', this.wish);
   }
 
   toggleFulfilled() {
-    this.fulfilled = !this.fulfilled;
-    this.fulfilledChange.emit(this.fulfilled);
+    this.wish.isComplete = !this.wish.isComplete;
   }
 }
