@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { WishItem } from '../../shared/models/wishItem';
+import { WishItem } from '../../../shared/models/wishItem';
 
 // ng create a component adding "app-" as suffix to the the name
 // we need to remove it or modify the name of the components in the rest of the files

@@ -1,7 +1,7 @@
 // file create with CLI - "ng generate service Wish"
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { WishItem } from '../shared/models/wishItem';
+import { WishItem } from '../../shared/models/wishItem';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs';
 import { throwError } from 'rxjs';
@@ -36,7 +36,7 @@ export class WishService {
     // in a real app here we'd put a real URL -- options here adds the parameters of the request
     return (
       this.http
-        .get('/assets/wishe1s.json', options)
+        .get('/assets/wishes.json', options)
         // we add a pipe to process the error - now we need to add below how to handleError
         .pipe(catchError(this.handleError))
     );
