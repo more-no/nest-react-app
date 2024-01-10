@@ -1,6 +1,6 @@
 // created with 'ng g component contact -m contact'
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
@@ -8,13 +8,14 @@ import { FormControl } from '@angular/forms';
   styleUrl: './contact.component.sass',
 })
 export class ContactComponent {
-  senderNameControl = new FormControl('');
-  senderEmailControl = new FormControl('');
-  senderMessageControl = new FormControl('');
+  contactForm = new FormGroup({
+    senderName: new FormControl(''),
+    senderEmail: new FormControl(''),
+    senderMessage: new FormControl(''),
+  });
 
   submitForm() {
-    if (this.senderNameControl.dirty) {
-      alert('you changed the name field');
-    }
+    console.log(this.contactForm.value);
+    console.log(this.contactForm.valid);
   }
 }
