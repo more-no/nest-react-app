@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 // import { WishListItemComponent } from './wish/wish-list-item/wish-list-item.component';
 //      finally we import the WishModule where we moved all the wish-logic
 import { WishModule } from './wish/wish.module';
+import { ContactModule } from './contact/contact.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { WishModule } from './wish/wish.module';
     // WishListItemComponent,
   ],
   //      obviously the WishModule must be added to the imports
-  imports: [BrowserModule, AppRoutingModule, WishModule],
+  imports: [BrowserModule, AppRoutingModule, WishModule, ContactModule],
   providers: [],
   bootstrap: [AppComponent],
 })
