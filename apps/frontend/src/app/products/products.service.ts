@@ -20,7 +20,12 @@ export class ProductsService {
 
   constructor() {}
 
+  //  with 'of' we ask to return an Observable to which we can subscribe to
   getAllProducts() {
     return of(this.data);
+  }
+
+  getProduct(id: number) {
+    return of(this.data.find((product) => product.id === id));
   }
 }

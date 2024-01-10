@@ -6,6 +6,7 @@ import { WishComponent } from './wish/wish.component';
 import { ContactComponent } from './contact/contact.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ProductsListComponent } from './products/productsList/productsList.component';
+import { ProductDetailsComponentComponent } from './products/product-details-component/product-details-component.component';
 
 const routes: Routes = [
   // the order of the routes is important  ==> '' must first and ** must be last
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'wish', component: WishComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'products', component: ProductsListComponent },
+  { path: 'products/:id', component: ProductDetailsComponentComponent },
   { path: '**', component: NotFoundComponent }, // take-all for all non-existing paths
 ];
 

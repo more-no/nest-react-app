@@ -14,6 +14,7 @@ import { WishService } from './../wish/wish.service';
 export class WishComponent {
   // we use the bang so we can not initialize it
   items: WishItem[] = [];
+
   constructor(
     event: EventService,
     private wishService: WishService,
@@ -23,6 +24,7 @@ export class WishComponent {
       this.items.splice(index, 1);
     });
   }
+
   ngOnInit(): void {
     // here we can call the service we created getWishes
     // the get request returns an Observable, to which we must subscribe
