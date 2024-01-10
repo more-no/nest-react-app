@@ -10,7 +10,7 @@ import { WishService } from './wish.service';
 })
 export class AppComponent implements OnInit {
   // we use the bang so we can not initialize it
-  items!: WishItem[];
+  items: WishItem[] = [];
 
   constructor(
     event: EventService,
@@ -25,9 +25,14 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     // here we can call the service we created getWishes
     // the get request returns an Observable, to which we must subscribe
-    this.wishService.getWishes().subscribe((data: any) => {
-      this.items = data;
-    });
+    this.wishService.getWishes().subscribe(
+      (data: any) => {
+        this.items = data;
+      },
+      (error: any) => {
+        alert(error.message);
+      },
+    );
   }
 
   // this is simplified with the two-way binding in the app.component.html in wish-filter
