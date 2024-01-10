@@ -44,6 +44,11 @@
         *ngIf="contactForm.get('senderEmail')?.hasError('email')"
         >Please enter a valid email address</small
       >
+      <small
+        class="text-danger"
+        *ngIf="contactForm.get('senderEmail')?.hasError('invalidEmailDomain')"
+        >The email provider is not allowed</small
+      >
     </div>
   </div>
 
@@ -54,7 +59,6 @@
       rows="3"
       formControlName="senderMessage"
     ></textarea>
-
     <div
       *ngIf="
         contactForm.get('senderMessage')?.invalid &&
