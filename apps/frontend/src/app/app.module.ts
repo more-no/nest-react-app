@@ -6,6 +6,7 @@ import { WishModule } from './wish/wish.module';
 import { ContactModule } from './contact/contact.module';
 import { FirstComponent } from './first/first.component';
 import { SecondComponent } from './second/second.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { SecondComponent } from './second/second.component';
     AppComponent,
     FirstComponent,
     SecondComponent,
+    NotFoundComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, WishModule, ContactModule],
   providers: [],

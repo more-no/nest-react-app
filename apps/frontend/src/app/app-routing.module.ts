@@ -4,12 +4,15 @@ import { FirstComponent } from './first/first.component';
 import { SecondComponent } from './second/second.component';
 import { WishComponent } from './wish/wish.component';
 import { ContactComponent } from './contact/contact.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
+  // the order of the routes is important  ==> '' must first and ** must be last
   { path: '', component: FirstComponent }, // empty path is taken as homepage
   { path: 'second', component: SecondComponent },
   { path: 'wish', component: WishComponent },
   { path: 'contact', component: ContactComponent },
+  { path: '**', component: NotFoundComponent }, // take-all for all non-existing paths
 ];
 
 @NgModule({
