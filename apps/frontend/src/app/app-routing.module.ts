@@ -5,6 +5,7 @@ import { SecondComponent } from './second/second.component';
 import { WishComponent } from './wish/wish.component';
 import { ContactComponent } from './contact/contact.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ProductsListComponent } from './products/productsList/productsList.component';
 
 const routes: Routes = [
   // the order of the routes is important  ==> '' must first and ** must be last
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'second', component: SecondComponent },
   { path: 'wish', component: WishComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'products', component: ProductsListComponent },
   { path: '**', component: NotFoundComponent }, // take-all for all non-existing paths
 ];
 
