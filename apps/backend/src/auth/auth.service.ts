@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AuthDto } from './dto';
+import { AuthDto, AuthLoginDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { Tokens } from './types';
 import { JwtService } from '@nestjs/jwt';
@@ -16,7 +16,7 @@ export class AuthService {
 
   async signup(dto: AuthDto): Promise<Tokens> {
     const hash = await this.hashData(dto.password);
-    console.log('Hash: ', hash);
+    console.log('HASH: ', hash);
 
     const newUser = await this.prisma.user.create({
       data: {
@@ -26,18 +26,48 @@ export class AuthService {
       },
     });
 
+    console.log('HASH PUT IN DATABASE: ', newUser.password_hash);
+
     const tokens = await this.getTokens(
       newUser.id,
       newUser.username,
       newUser.email,
     );
 
+    // removed because re-hash
     await this.updateRtHash(newUser.id, tokens.refresh_token);
 
     return tokens;
   }
 
-  login() {}
+  async login(dto: AuthLoginDto): Promise<Tokens> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        username: dto.username,
+      },
+    });
+
+    if (!user) throw new ForbiddenException('Username does not exist.');
+
+    console.log('HASH SAVED: ', user.password_hash);
+    console.log('PASSWORD PASSED: ', dto.password);
+
+    const passwordMatches = await bcrypt.compare(
+      dto.password,
+      user.password_hash,
+    );
+
+    console.log('Password Matches:', passwordMatches);
+
+    if (!passwordMatches)
+      throw new ForbiddenException('Password does not exist.');
+
+    const tokens = await this.getTokens(user.id, user.username, user.email);
+
+    await this.updateRtHash(user.id, tokens.refresh_token);
+
+    return tokens;
+  }
 
   logout() {}
 
@@ -51,14 +81,15 @@ export class AuthService {
         id: userId,
       },
       data: {
-        password_hash: hash,
+        refresh_token: hash,
       },
     });
   }
 
-  hashData(data: string) {
-    console.log('Data to be hashed:', data);
-    return bcrypt.hash(data, 10);
+  async hashData(data: string) {
+    console.log('DATA TO BE HASHED:', data);
+    const hash = await bcrypt.hash(data, 10);
+    return hash;
   }
 
   async getTokens(

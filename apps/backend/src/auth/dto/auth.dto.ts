@@ -11,8 +11,20 @@ export class AuthDto {
 
   @IsNotEmpty()
   @IsString()
+  password: string;
+
+  @IsNotEmpty()
+  @IsString()
   @IsEmail()
   email: string;
+}
+
+export class AuthLoginDto {
+  // this is for the tutorial - ill have to adapt to my app later
+
+  @IsNotEmpty()
+  @IsString()
+  username: string;
 
   @IsNotEmpty()
   @IsString()

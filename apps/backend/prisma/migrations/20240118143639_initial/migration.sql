@@ -7,6 +7,7 @@ CREATE TABLE "users" (
     "bio" VARCHAR(300),
     "date_registration" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "password_hash" VARCHAR(80) NOT NULL,
+    "refresh_token" VARCHAR(80),
     "post_count" INTEGER NOT NULL DEFAULT 0,
     "comment_count" INTEGER NOT NULL DEFAULT 0,
     "user_subscriptions" INTEGER NOT NULL DEFAULT 0,
@@ -46,6 +47,9 @@ CREATE TABLE "_RoleToUser" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_username_key" ON "users"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");

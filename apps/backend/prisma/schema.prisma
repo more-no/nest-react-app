@@ -12,12 +12,13 @@ datasource db {
 
 model User {
   id                 Int        @id @default(autoincrement())
-  username           String     @db.VarChar(20)
+  username           String     @unique @db.VarChar(20)
   email              String     @unique
   picture_url        String?    @db.VarChar(200)
   bio                String?    @db.VarChar(300)
   date_registration  DateTime   @default(now()) @db.Date
   password_hash      String     @db.VarChar(80)
+  refresh_token      String?    @db.VarChar(80)
   post_count         Int        @default(0)
   comment_count      Int        @default(0)
   user_subscriptions Int        @default(0)
