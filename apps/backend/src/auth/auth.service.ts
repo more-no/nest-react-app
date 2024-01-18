@@ -63,15 +63,41 @@ export class AuthService {
       throw new ForbiddenException('Password does not exist.');
 
     const tokens = await this.getTokens(user.id, user.username, user.email);
-
     await this.updateRtHash(user.id, tokens.refresh_token);
-
     return tokens;
   }
 
-  logout() {}
+  async logout(userId: number) {
+    await this.prisma.user.updateMany({
+      where: {
+        id: userId,
+        refresh_token: {
+          not: null,
+        },
+      },
+      data: {
+        refresh_token: null,
+      },
+    });
+  }
 
-  refreshTokens() {}
+  async refreshTokens(userId: number, rt: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) throw new ForbiddenException('Access Denied!');
+
+    const rtMatches = await bcrypt.compare(rt, user.refresh_token);
+
+    if (!rtMatches) throw new ForbiddenException('Access Denied!');
+
+    const tokens = await this.getTokens(user.id, user.username, user.email);
+    await this.updateRtHash(user.id, tokens.refresh_token);
+    return tokens;
+  }
 
   async updateRtHash(userId: number, rt: string) {
     const hash = await this.hashData(rt);

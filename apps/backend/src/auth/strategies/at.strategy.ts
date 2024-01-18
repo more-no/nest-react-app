@@ -3,8 +3,15 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
+type JwtPayload = {
+  sub: string;
+  username: string;
+};
+
 // access token strategy
+// here the jwt is the name of the strategy and is used to define the AuthGuard in the controller
 @Injectable()
+// here passport take care of the validation of the token
 export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(/*config: ConfigService*/) {
     super({
@@ -13,7 +20,7 @@ export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  validate(payload: any) {
+  validate(payload: JwtPayload) {
     return payload;
   }
 }
