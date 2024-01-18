@@ -16,7 +16,6 @@ export class AuthService {
 
   async signup(dto: AuthDto): Promise<Tokens> {
     const hash = await this.hashData(dto.password);
-    console.log('HASH: ', hash);
 
     const newUser = await this.prisma.user.create({
       data: {
@@ -25,8 +24,6 @@ export class AuthService {
         password_hash: hash,
       },
     });
-
-    console.log('HASH PUT IN DATABASE: ', newUser.password_hash);
 
     const tokens = await this.getTokens(
       newUser.id,
@@ -49,15 +46,10 @@ export class AuthService {
 
     if (!user) throw new ForbiddenException('Username does not exist.');
 
-    console.log('HASH SAVED: ', user.password_hash);
-    console.log('PASSWORD PASSED: ', dto.password);
-
     const passwordMatches = await bcrypt.compare(
       dto.password,
       user.password_hash,
     );
-
-    console.log('Password Matches:', passwordMatches);
 
     if (!passwordMatches)
       throw new ForbiddenException('Password does not exist.');
@@ -88,7 +80,8 @@ export class AuthService {
       },
     });
 
-    if (!user) throw new ForbiddenException('Access Denied!');
+    if (!user || !user.refresh_token)
+      throw new ForbiddenException('Access Denied!');
 
     const rtMatches = await bcrypt.compare(rt, user.refresh_token);
 
@@ -113,7 +106,6 @@ export class AuthService {
   }
 
   async hashData(data: string) {
-    console.log('DATA TO BE HASHED:', data);
     const hash = await bcrypt.hash(data, 10);
     return hash;
   }
