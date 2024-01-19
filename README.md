@@ -2,9 +2,9 @@
 
 ## pnpm run dev
 
-- backend port 5000
+- backend port 3000
 
-- frontend port 5173
+- frontend port 4200
 
 ## pnpm run build
 
