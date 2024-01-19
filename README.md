@@ -8,6 +8,3 @@
 
 ## pnpm run build
 
-## pnpm run start
-
-- port 5000
