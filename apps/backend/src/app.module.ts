@@ -8,6 +8,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { join } from 'path';
+import { ConfigModule } from '@nestjs/config';
 
 // this is the root module of the application
 
@@ -19,6 +20,7 @@ import { join } from 'path';
       sortSchema: true,
       // typePaths: ['./**/*.graphql'], // typePaths is for schema-first approach
     }),
+    ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
     PrismaModule,
     AuthModule,

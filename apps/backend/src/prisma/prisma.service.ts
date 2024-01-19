@@ -7,13 +7,13 @@ export class PrismaService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
-  constructor(/* config: ConfigService */) {
-    // const url = config.get<string>('DATABASE_URL');
+  constructor(config: ConfigService) {
+    const url = config.get<string>('DATABASE_URL');
 
     super({
       datasources: {
         db: {
-          url: 'postgresql://nest_react_app:nest_react_app@localhost:5432/nest_react_app?schema=nest_react_app',
+          url: url,
         },
       },
     });

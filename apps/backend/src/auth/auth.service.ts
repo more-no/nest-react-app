@@ -4,14 +4,15 @@ import { AuthDto, AuthLoginDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { Tokens } from './types';
 import { JwtService } from '@nestjs/jwt';
-// import { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
+import { JwtPayload } from './types/jwtPayload.type';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-    // config: ConfigService,
+    private config: ConfigService,
   ) {}
 
   async signup(dto: AuthDto): Promise<Tokens> {
@@ -59,7 +60,7 @@ export class AuthService {
     return tokens;
   }
 
-  async logout(userId: number) {
+  async logout(userId: number): Promise<boolean> {
     await this.prisma.user.updateMany({
       where: {
         id: userId,
@@ -71,9 +72,10 @@ export class AuthService {
         refresh_token: null,
       },
     });
+    return true;
   }
 
-  async refreshTokens(userId: number, rt: string) {
+  async refreshTokens(userId: number, rt: string): Promise<Tokens> {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -89,10 +91,11 @@ export class AuthService {
 
     const tokens = await this.getTokens(user.id, user.username, user.email);
     await this.updateRtHash(user.id, tokens.refresh_token);
+
     return tokens;
   }
 
-  async updateRtHash(userId: number, rt: string) {
+  async updateRtHash(userId: number, rt: string): Promise<void> {
     const hash = await this.hashData(rt);
 
     await this.prisma.user.update({
@@ -114,20 +117,27 @@ export class AuthService {
     userId: number,
     username: string,
     email: string,
-    /*role: string,
-    iat (Issued At Timestamp): number
-    expiryTimeStamp: date? number?*/
-  ) {
+    /*role: string,*/
+  ): Promise<Tokens> {
+    const jwtPayload: JwtPayload = {
+      sub: userId,
+      username: username,
+      email: email,
+    };
+
     const [at, rt] = await Promise.all([
       this.jwtService.signAsync(
         // verification accessToken
-        { sub: userId, username, email },
-        { secret: 'AT_SECRET', expiresIn: 60 * 15 },
+        jwtPayload,
+        { secret: this.config.get<string>('AT_SECRET'), expiresIn: 60 * 15 },
       ),
       this.jwtService.signAsync(
         // verification refreshToken
-        { sub: userId, username, email },
-        { secret: 'RT_SECRET', expiresIn: 60 * 60 * 24 },
+        jwtPayload,
+        {
+          secret: this.config.get<string>('RT_SECRET'),
+          expiresIn: 60 * 60 * 24,
+        },
       ),
     ]);
 
