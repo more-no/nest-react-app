@@ -4,11 +4,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { UsersModule } from './users/users.module';
-import { PrismaService } from './prisma/prisma.service';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaService } from '../prisma/prisma.service';
+import { PrismaModule } from '../prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
-import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
+import { UsersService } from './users/users.service';
 
 // this is the root module of the application
 
@@ -16,9 +16,7 @@ import { ConfigModule } from '@nestjs/config';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
-      // typePaths: ['./**/*.graphql'], // typePaths is for schema-first approach
+      typePaths: ['./**/*.graphql'],
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
@@ -26,6 +24,6 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, UsersService],
 })
 export class AppModule {}
