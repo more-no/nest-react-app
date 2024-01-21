@@ -7,14 +7,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto, AuthLoginDto } from './dto';
-import { Tokens } from './types';
 import { AtGuard, RtGuard } from 'src/common/guards';
 import {
   Public,
   GetCurrentUser,
   GetCurrentUserId,
 } from 'src/common/decorators';
+import { AuthDto, AuthLoginDto } from './dto/auth.dto';
+import { Tokens } from 'src/graphql';
 
 @Controller('auth')
 export class AuthController {

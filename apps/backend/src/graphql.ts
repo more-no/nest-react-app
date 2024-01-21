@@ -19,6 +19,24 @@ export class UpdateUserInput {
     id: number;
 }
 
+export class Tokens {
+    access_token: string;
+    refresh_token: string;
+}
+
+export class JwtPayload {
+    username: string;
+    email: string;
+    sub: number;
+}
+
+export class JwtPayloadWithRt {
+    username: string;
+    email: string;
+    sub: number;
+    refreshToken?: Nullable<string>;
+}
+
 export class User {
     id: number;
     username: string;

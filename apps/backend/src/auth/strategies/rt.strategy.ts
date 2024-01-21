@@ -3,8 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express'; //  ==> not sure i need it
-import { JwtPayload } from '../types/jwtPayload.type';
-import { JwtPayloadWithRt } from '../types/jwtPayloadWithRt.type';
+import { JwtPayload, JwtPayloadWithRt } from 'src/graphql';
+// import { JwtPayload } from '../types/jwtPayload.type';
+// import { JwtPayloadWithRt } from '../types/jwtPayloadWithRt.type';
 
 // refresh token strategy
 // here the jwt is the name of the strategy and is used to define the AuthGuard in the controller

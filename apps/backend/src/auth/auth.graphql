@@ -1,0 +1,17 @@
+type Tokens {
+  access_token: String!
+  refresh_token: String!
+}
+
+type JwtPayload {
+  username: String!
+  email: String!
+  sub: Int!
+}
+
+type JwtPayloadWithRt {
+  username: String!
+  email: String!
+  sub: Int!
+  refreshToken: String
+}

@@ -3,8 +3,6 @@
 import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
 
 export class AuthDto {
-  // this is for the tutorial - ill have to adapt to my app later
-
   @IsNotEmpty()
   @IsString()
   username: string;
@@ -20,8 +18,6 @@ export class AuthDto {
 }
 
 export class AuthLoginDto {
-  // this is for the tutorial - ill have to adapt to my app later
-
   @IsNotEmpty()
   @IsString()
   username: string;

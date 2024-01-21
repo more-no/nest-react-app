@@ -1,11 +1,10 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
-import { AuthDto, AuthLoginDto } from './dto';
 import * as bcrypt from 'bcrypt';
-import { Tokens } from './types';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { JwtPayload } from './types/jwtPayload.type';
+import { AuthDto, AuthLoginDto } from './dto/auth.dto';
+import { JwtPayload, Tokens } from 'src/graphql';
 
 @Injectable()
 export class AuthService {
