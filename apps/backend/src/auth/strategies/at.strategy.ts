@@ -4,11 +4,6 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtPayload } from 'src/graphql';
 
-// type JwtPayload = {
-//   sub: string;
-//   username: string;
-// };
-
 // access token strategy
 // here the jwt is the name of the strategy and is used to define the AuthGuard in the controller
 @Injectable()

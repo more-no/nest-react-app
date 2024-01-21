@@ -31,7 +31,6 @@ export class AuthService {
       newUser.email,
     );
 
-    // removed because re-hash
     await this.updateRtHash(newUser.id, tokens.refresh_token);
 
     return tokens;
