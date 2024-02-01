@@ -5,10 +5,10 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtPayload } from 'src/graphql';
 
 // access token strategy
-// here the jwt is the name of the strategy and is used to define the AuthGuard in the controller
+
 @Injectable()
 // here passport take care of the validation of the token
-export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class AtStrategy extends PassportStrategy(Strategy) {
   constructor(config: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -16,7 +16,7 @@ export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  validate(payload: JwtPayload) {
+  async validate(payload: JwtPayload) {
     return payload;
   }
 }

@@ -1,33 +1,49 @@
+scalar Upload
+
+type Query {
+  users: [User]!
+}
+
+type Mutation {
+  upload(id: ID!, image: Upload!): UploadResultInput!
+  update(id: ID!, dto: UpdateUserInput!): User!
+  remove(id: ID!): User!
+  role(id: ID!, roleId: Int!): User!
+}
+
 type User {
   id: Int!
-  username: String!
-  email: String!
+  username: String
+  email: String
+  fullname: String
   picture_url: String
   bio: String
   date_registration: Int
+  password_hash: String!
+  refresh_token: String
   post_count: Int
   comment_count: Int
   user_subscriptions: Int
 }
 
-input CreateUserInput {
-  username: String!
-  email: String!
-  picture_url: String
-  bio: String
+# type UploadResultDto {
+#   userId: Int!
+#   filename: String!
+# }
+
+# type UpdateUserDto {
+#   username: String
+#   email: String
+# }
+
+type UploadResultInput {
+  userId: Int!
+  filename: String!
 }
 
 input UpdateUserInput {
-  id: Int!
-}
-
-type Query {
-  users: [User]!
-  user(id: Int!): User
-}
-
-type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User
+  id: ID
+  username: String
+  fullname: String
+  bio: String
 }

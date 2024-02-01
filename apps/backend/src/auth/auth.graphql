@@ -1,17 +1,48 @@
+type Query {
+  user: User!
+}
+
+type Mutation {
+  signup(dto: AuthSignupInput!): Tokens!
+  login(dto: AuthLoginInput!): Tokens!
+  logout(userId: Int!): Boolean!
+  refresh(userId: Int!, refreshToken: String!): Tokens!
+}
+
 type Tokens {
   access_token: String!
   refresh_token: String!
 }
 
 type JwtPayload {
+  sub: Int!
   username: String!
   email: String!
-  sub: Int!
+  role_name: String!
 }
 
 type JwtPayloadWithRt {
+  sub: Int!
   username: String!
   email: String!
-  sub: Int!
-  refreshToken: String
+  refreshToken: String!
+}
+
+input AuthSignupInput {
+  username: String!
+  password: String!
+  email: String!
+}
+
+input AuthLoginInput {
+  username: String!
+  password: String!
+}
+
+input CreateUserRoleInput {
+  role: ConnectRoleInput!
+}
+
+input ConnectRoleInput {
+  id: Int!
 }

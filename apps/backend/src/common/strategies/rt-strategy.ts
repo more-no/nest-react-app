@@ -3,12 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
-import { JwtPayload, JwtPayloadWithRt } from 'src/graphql';
+import { JwtPayload } from 'src/graphql';
 
 // refresh token strategy
-// here the jwt is the name of the strategy and is used to define the AuthGuard in the controller
+
 @Injectable()
-// here passport take care of the validation of the token
+// here passport take care of the revalidation of the token
 export class RtStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
   constructor(config: ConfigService) {
     super({
@@ -18,7 +18,7 @@ export class RtStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
     });
   }
 
-  validate(req: Request, payload: JwtPayload): JwtPayloadWithRt {
+  async validate(req: Request, payload: JwtPayload) {
     const refreshToken = req
       ?.get('authorization')
       ?.replace('Bearer', '')
