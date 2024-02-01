@@ -28,7 +28,6 @@ export class ConnectRoleInput {
 }
 
 export class UpdateUserInput {
-    id?: Nullable<string>;
     username?: Nullable<string>;
     fullname?: Nullable<string>;
     bio?: Nullable<string>;
@@ -49,9 +48,9 @@ export abstract class IMutation {
 
     abstract refresh(userId: number, refreshToken: string): Tokens | Promise<Tokens>;
 
-    abstract upload(id: string, image: Upload): UploadResultInput | Promise<UploadResultInput>;
+    abstract upload(id: string, image: Upload): UploadInput | Promise<UploadInput>;
 
-    abstract update(id: string, dto: UpdateUserInput): User | Promise<User>;
+    abstract update(id: string, dto: UpdateUserInput): UpdateResult | Promise<UpdateResult>;
 
     abstract remove(id: string): User | Promise<User>;
 
@@ -79,22 +78,28 @@ export class JwtPayloadWithRt {
 
 export class User {
     id: number;
-    username?: Nullable<string>;
+    username: string;
     email?: Nullable<string>;
     fullname?: Nullable<string>;
     picture_url?: Nullable<string>;
     bio?: Nullable<string>;
     date_registration?: Nullable<number>;
-    password_hash: string;
+    password_hash?: Nullable<string>;
     refresh_token?: Nullable<string>;
     post_count?: Nullable<number>;
     comment_count?: Nullable<number>;
     user_subscriptions?: Nullable<number>;
 }
 
-export class UploadResultInput {
+export class UploadInput {
     userId: number;
     filename: string;
+}
+
+export class UpdateResult {
+    username?: Nullable<string>;
+    fullname?: Nullable<string>;
+    bio?: Nullable<string>;
 }
 
 export type Upload = any;

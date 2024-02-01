@@ -7,7 +7,8 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { UpdateUserInput, UploadResultInput } from 'src/graphql';
+import { UpdateResult, UpdateUserInput } from 'src/graphql';
+import { UploadInput } from './dto/upload-user.input';
 
 @Injectable()
 export class UsersService {
@@ -25,8 +26,7 @@ export class UsersService {
   // }
 
   // update user info
-  async update(id: number, dto: UpdateUserInput) {
-    console.log('DTO: ', dto);
+  async update(id: number, dto: UpdateUserInput): Promise<UpdateResult> {
     try {
       const userUpdated = await this.prisma.user.update({
         where: {
@@ -54,7 +54,7 @@ export class UsersService {
   }
 
   // upload user picture
-  async upload(userId: number, pictureUrl: string): Promise<UploadResultInput> {
+  async upload(userId: number, pictureUrl: string): Promise<UploadInput> {
     try {
       const userUpdated = await this.prisma.user.update({
         where: { id: userId },

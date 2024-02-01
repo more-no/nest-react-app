@@ -4,6 +4,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { JwtModule } from '@nestjs/jwt';
 import { RolesGuard } from 'src/common/guards/role.guard';
+import { UsersResolver } from './users.resolver';
 
 @Module({
   imports: [
@@ -12,6 +13,6 @@ import { RolesGuard } from 'src/common/guards/role.guard';
     }),
     JwtModule.register({}),
   ],
-  providers: [UsersService, RolesGuard],
+  providers: [UsersService, UsersResolver, RolesGuard],
 })
 export class UsersModule {}

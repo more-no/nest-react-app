@@ -5,44 +5,39 @@ type Query {
 }
 
 type Mutation {
-  upload(id: ID!, image: Upload!): UploadResultInput!
-  update(id: ID!, dto: UpdateUserInput!): User!
+  upload(id: ID!, image: Upload!): UploadInput!
+  update(id: ID!, dto: UpdateUserInput!): UpdateResult!
   remove(id: ID!): User!
   role(id: ID!, roleId: Int!): User!
 }
 
 type User {
   id: Int!
-  username: String
+  username: String!
   email: String
   fullname: String
   picture_url: String
   bio: String
   date_registration: Int
-  password_hash: String!
+  password_hash: String
   refresh_token: String
   post_count: Int
   comment_count: Int
   user_subscriptions: Int
 }
 
-# type UploadResultDto {
-#   userId: Int!
-#   filename: String!
-# }
-
-# type UpdateUserDto {
-#   username: String
-#   email: String
-# }
-
-type UploadResultInput {
+type UploadInput {
   userId: Int!
   filename: String!
 }
 
 input UpdateUserInput {
-  id: ID
+  username: String
+  fullname: String
+  bio: String
+}
+
+type UpdateResult {
   username: String
   fullname: String
   bio: String

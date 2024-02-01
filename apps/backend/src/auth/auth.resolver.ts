@@ -33,7 +33,6 @@ export class AuthResolver {
     @GetUserId() userId: number,
     @GetUserRt() refreshToken: string,
   ): Promise<Tokens> {
-    console.log('Mutation: ', userId, refreshToken);
     return this.authService.refreshTokens(userId, refreshToken);
   }
 }

@@ -1,6 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
 
-export class UploadResultInput {
+export class UploadInput {
   @IsNumber()
   userId: number;
 

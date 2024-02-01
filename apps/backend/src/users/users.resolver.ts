@@ -3,7 +3,6 @@ import { UsersService } from './users.service';
 import {
   Body,
   Delete,
-  Param,
   Req,
   UploadedFile,
   UseGuards,
@@ -38,7 +37,12 @@ export class UsersResolver {
   // @UseGuards(AtGuard, RolesGuard)
   // @Roles(RolesEnum.User, RolesEnum.Editor)
   async update(@Args('id') id: number, @Args('dto') dto: UpdateUserInput) {
-    return await this.usersService.update(+id, dto);
+    const updatedInfo = await this.usersService.update(+id, dto);
+    return {
+      username: updatedInfo.username,
+      fullname: updatedInfo.fullname,
+      bio: updatedInfo.bio,
+    };
   }
 
   @Delete('remove')
