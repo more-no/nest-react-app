@@ -7,7 +7,8 @@ type Query {
 type Mutation {
   upload(id: ID!, image: Upload!): UploadInput!
   update(id: ID!, dto: UpdateUserInput!): UpdateResult!
-  remove(id: ID!): User!
+  remove(id: ID!): Boolean!
+  adminRemove(id: ID!): User!
   role(id: ID!, roleId: Int!): User!
 }
 

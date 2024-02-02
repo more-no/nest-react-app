@@ -4,6 +4,7 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { Observable } from 'rxjs';
 
 // reference https://docs.nestjs.com/interceptors#basics
@@ -11,10 +12,16 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class TokenInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    // modify the request object
-    const request = context.switchToHttp().getRequest();
-    const token = request.headers.authorization.split(' ')[1]; // remove "Bearer " from the string
-    request.token = token;
+    const gqlContext = GqlExecutionContext.create(context);
+    const ctx = gqlContext.getContext();
+
+    const authorizationHeader = ctx.req.headers.authorization;
+
+    if (authorizationHeader) {
+      const token = authorizationHeader.split(' ')[1];
+      ctx.token = token;
+    }
+
     return next.handle();
   }
 }

@@ -9,6 +9,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateResult, UpdateUserInput } from 'src/graphql';
 import { UploadInput } from './dto/upload-user.input';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -62,17 +63,26 @@ export class UsersService {
       });
 
       if (!userUpdated) {
-        throw new BadRequestException('Could not upload');
+        throw new NotFoundException('User not found');
       }
 
       return { userId, filename: pictureUrl };
     } catch (error) {
-      throw new NotFoundException(`Failed to upload: ${error.message}`);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        // Handle Prisma-specific errors
+        throw new InternalServerErrorException(
+          `Failed to update user: ${error.message}`,
+        );
+      } else {
+        throw new InternalServerErrorException(
+          `Failed to update user: ${error.message}`,
+        );
+      }
     }
   }
 
   // delete authenticated user and session
-  async userRemove(userId: number, request: any): Promise<number> {
+  async userRemove(userId: number, accessToken: string): Promise<boolean> {
     try {
       const session = await this.prisma.session.findFirst({
         where: {
@@ -84,8 +94,8 @@ export class UsersService {
         throw new NotFoundException('Session not found');
       }
 
-      if (session.token === request.token) {
-        const token = await this.jwtService.decode(request.token);
+      if (session.token === accessToken) {
+        const token = await this.jwtService.decode(accessToken);
 
         const userDeleted = await this.prisma.user.deleteMany({
           where: { id: token.sub },
@@ -103,7 +113,7 @@ export class UsersService {
           throw new InternalServerErrorException('Error during deletion');
         }
 
-        return userId;
+        return true;
       } else {
         throw new UnauthorizedException('Unauthorized');
       }

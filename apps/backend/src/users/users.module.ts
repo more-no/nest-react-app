@@ -5,6 +5,7 @@ import { memoryStorage } from 'multer';
 import { JwtModule } from '@nestjs/jwt';
 import { RolesGuard } from 'src/common/guards/role.guard';
 import { UsersResolver } from './users.resolver';
+import { TokenInterceptor } from 'src/common/interceptors/token.interceptor';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { UsersResolver } from './users.resolver';
     }),
     JwtModule.register({}),
   ],
-  providers: [UsersService, UsersResolver, RolesGuard],
+  providers: [UsersService, UsersResolver, RolesGuard, TokenInterceptor],
 })
 export class UsersModule {}

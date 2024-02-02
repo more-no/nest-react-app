@@ -52,7 +52,9 @@ export abstract class IMutation {
 
     abstract update(id: string, dto: UpdateUserInput): UpdateResult | Promise<UpdateResult>;
 
-    abstract remove(id: string): User | Promise<User>;
+    abstract remove(id: string): boolean | Promise<boolean>;
+
+    abstract adminRemove(id: string): User | Promise<User>;
 
     abstract role(id: string, roleId: number): User | Promise<User>;
 }
