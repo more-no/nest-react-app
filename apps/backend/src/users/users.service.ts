@@ -9,7 +9,6 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateResult, UpdateUserInput } from 'src/graphql';
 import { UploadInput } from './dto/upload-user.input';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
