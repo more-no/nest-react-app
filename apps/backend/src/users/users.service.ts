@@ -8,7 +8,6 @@ import {
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateResult, UpdateUserInput } from 'src/graphql';
-import { UploadInput } from './dto/upload-user.input';
 
 @Injectable()
 export class UsersService {
@@ -23,33 +22,6 @@ export class UsersService {
 
   // findOne(id: number) {
   //   return `This action returns a #${id} user`;
-  // }
-
-  // // upload user picture
-  // async upload(userId: number, pictureUrl: string): Promise<UploadInput> {
-  //   try {
-  //     const userUpdated = await this.prisma.user.update({
-  //       where: { id: userId },
-  //       data: { picture_url: pictureUrl },
-  //     });
-
-  //     if (!userUpdated) {
-  //       throw new NotFoundException('User not found');
-  //     }
-
-  //     return { userId, filename: pictureUrl };
-  //   } catch (error) {
-  //     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-  //       // Handle Prisma-specific errors
-  //       throw new InternalServerErrorException(
-  //         `Failed to update user: ${error.message}`,
-  //       );
-  //     } else {
-  //       throw new InternalServerErrorException(
-  //         `Failed to update user: ${error.message}`,
-  //       );
-  //     }
-  //   }
   // }
 
   // update user info

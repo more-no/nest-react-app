@@ -1,11 +1,8 @@
-scalar Upload
-
 type Query {
   users: [User]!
 }
 
 type Mutation {
-  upload(id: ID!, image: Upload!): UploadInput!
   update(id: ID!, dto: UpdateUserInput!): UpdateResult!
   remove(id: ID!): Boolean!
   adminRemove(id: ID!): ID!
@@ -25,11 +22,6 @@ type User {
   post_count: Int
   comment_count: Int
   user_subscriptions: Int
-}
-
-type UploadInput {
-  userId: Int!
-  filename: String!
 }
 
 input UpdateUserInput {

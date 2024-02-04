@@ -1,8 +1,6 @@
 import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { Body, UseGuards, UseInterceptors } from '@nestjs/common';
-import { SharpPipe } from 'src/common/utils/sharp.pipe';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { UseGuards, UseInterceptors } from '@nestjs/common';
 import { AtGuard } from 'src/common/guards';
 import { RolesGuard } from 'src/common/guards/role.guard';
 import { RolesEnum } from '@prisma/client';
@@ -13,18 +11,6 @@ import { TokenInterceptor } from 'src/common/interceptors/token.interceptor';
 @Resolver('User')
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
-
-  // @Mutation('upload')
-  // // @UseGuards(AtGuard, RolesGuard)
-  // // @Roles(RolesEnum.User)
-  // // @UseInterceptors(FileInterceptor('image'))
-  // async upload(
-  //   @Args('id') userId: string,
-  //   @UploadedFile(SharpPipe) filename: string,
-  // ) {
-  //   const result = await this.usersService.upload(+userId, filename);
-  //   return [userId, filename];
-  // }
 
   @Mutation('update')
   @UseGuards(AtGuard, RolesGuard)

@@ -48,8 +48,6 @@ export abstract class IMutation {
 
     abstract refresh(userId: number, refreshToken: string): Tokens | Promise<Tokens>;
 
-    abstract upload(id: string, image: Upload): UploadInput | Promise<UploadInput>;
-
     abstract update(id: string, dto: UpdateUserInput): UpdateResult | Promise<UpdateResult>;
 
     abstract remove(id: string): boolean | Promise<boolean>;
@@ -93,16 +91,10 @@ export class User {
     user_subscriptions?: Nullable<number>;
 }
 
-export class UploadInput {
-    userId: number;
-    filename: string;
-}
-
 export class UpdateResult {
     username?: Nullable<string>;
     fullname?: Nullable<string>;
     bio?: Nullable<string>;
 }
 
-export type Upload = any;
 type Nullable<T> = T | null;
