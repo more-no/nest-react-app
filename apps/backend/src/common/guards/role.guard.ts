@@ -5,6 +5,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { RolesEnum } from '@prisma/client';
 import { JwtPayload } from 'src/graphql';
 
@@ -26,8 +27,10 @@ export class RolesGuard implements CanActivate {
     }
 
     // Get the user from the request object
-    const request = context.switchToHttp().getRequest();
-    const user = request.user as JwtPayload;
+    const gqlContext = GqlExecutionContext.create(context);
+    const ctx = gqlContext.getContext();
+
+    const user = ctx.req.user as JwtPayload;
 
     if (!user) {
       throw new ForbiddenException('Invalid user or roles');

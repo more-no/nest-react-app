@@ -54,9 +54,9 @@ export abstract class IMutation {
 
     abstract remove(id: string): boolean | Promise<boolean>;
 
-    abstract adminRemove(id: string): User | Promise<User>;
+    abstract adminRemove(id: string): string | Promise<string>;
 
-    abstract role(id: string, roleId: number): User | Promise<User>;
+    abstract updateRole(id: string, roleId: number): string | Promise<string>;
 }
 
 export class Tokens {

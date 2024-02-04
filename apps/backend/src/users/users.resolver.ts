@@ -1,13 +1,6 @@
 import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import {
-  Body,
-  Delete,
-  Req,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, UseGuards, UseInterceptors } from '@nestjs/common';
 import { SharpPipe } from 'src/common/utils/sharp.pipe';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AtGuard } from 'src/common/guards';
@@ -34,8 +27,8 @@ export class UsersResolver {
   // }
 
   @Mutation('update')
-  @UseGuards(AtGuard /*RolesGuard*/)
-  // @Roles(RolesEnum.User, RolesEnum.Editor)
+  @UseGuards(AtGuard, RolesGuard)
+  @Roles(RolesEnum.User, RolesEnum.Editor)
   async update(@Args('id') id: string, @Args('dto') dto: UpdateUserInput) {
     const updatedInfo = await this.usersService.update(+id, dto);
     return {
@@ -46,8 +39,8 @@ export class UsersResolver {
   }
 
   @Mutation('remove')
-  @UseGuards(AtGuard /*RolesGuard*/)
-  // @Roles(RolesEnum.User)
+  @UseGuards(AtGuard, RolesGuard)
+  @Roles(RolesEnum.User)
   @UseInterceptors(TokenInterceptor)
   async userRemove(@Context() context, @Args('id') id: string) {
     const accessToken = context.token;
@@ -56,7 +49,6 @@ export class UsersResolver {
     if (isDeleted) {
       return true;
     } else {
-      // Handle the case where userRemove failed (e.g., user not found, unauthorized)
       throw new Error('Failed to remove user.');
     }
   }
@@ -64,16 +56,16 @@ export class UsersResolver {
   // Admin endpoints
 
   @Mutation('adminRemove')
-  @UseGuards(AtGuard /*RolesGuard*/)
-  // @Roles(RolesEnum.Admin)
+  @UseGuards(AtGuard, RolesGuard)
+  @Roles(RolesEnum.Admin)
   async adminRemove(@Args('id') id: string) {
     return await this.usersService.adminRemove(+id);
   }
 
-  @Mutation('role')
-  @UseGuards(AtGuard /*RolesGuard*/)
-  // @Roles(RolesEnum.Admin)
-  async updateRole(@Args('id') id: string, @Body('roleId') roleId: number) {
+  @Mutation('updateRole')
+  @UseGuards(AtGuard, RolesGuard)
+  @Roles(RolesEnum.Admin)
+  async updateRole(@Args('id') id: string, @Args('roleId') roleId: string) {
     return await this.usersService.updateRole(+id, +roleId);
   }
 }
