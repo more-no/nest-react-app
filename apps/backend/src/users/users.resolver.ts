@@ -21,20 +21,20 @@ import { TokenInterceptor } from 'src/common/interceptors/token.interceptor';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Mutation('upload')
-  // @UseGuards(AtGuard, RolesGuard)
-  // @Roles(RolesEnum.User)
-  // @UseInterceptors(FileInterceptor('image'))
-  async upload(
-    @Args('id') userId: string,
-    @UploadedFile(SharpPipe) filename: string,
-  ) {
-    const result = await this.usersService.upload(+userId, filename);
-    return [userId, filename];
-  }
+  // @Mutation('upload')
+  // // @UseGuards(AtGuard, RolesGuard)
+  // // @Roles(RolesEnum.User)
+  // // @UseInterceptors(FileInterceptor('image'))
+  // async upload(
+  //   @Args('id') userId: string,
+  //   @UploadedFile(SharpPipe) filename: string,
+  // ) {
+  //   const result = await this.usersService.upload(+userId, filename);
+  //   return [userId, filename];
+  // }
 
   @Mutation('update')
-  // @UseGuards(AtGuard, RolesGuard)
+  @UseGuards(AtGuard /*RolesGuard*/)
   // @Roles(RolesEnum.User, RolesEnum.Editor)
   async update(@Args('id') id: string, @Args('dto') dto: UpdateUserInput) {
     const updatedInfo = await this.usersService.update(+id, dto);
@@ -46,7 +46,7 @@ export class UsersResolver {
   }
 
   @Mutation('remove')
-  // @UseGuards(AtGuard, RolesGuard)
+  @UseGuards(AtGuard /*RolesGuard*/)
   // @Roles(RolesEnum.User)
   @UseInterceptors(TokenInterceptor)
   async userRemove(@Context() context, @Args('id') id: string) {
@@ -64,14 +64,14 @@ export class UsersResolver {
   // Admin endpoints
 
   @Mutation('adminRemove')
-  // @UseGuards(AtGuard, RolesGuard)
+  @UseGuards(AtGuard /*RolesGuard*/)
   // @Roles(RolesEnum.Admin)
   async adminRemove(@Args('id') id: string) {
     return await this.usersService.adminRemove(+id);
   }
 
   @Mutation('role')
-  // @UseGuards(AtGuard, RolesGuard)
+  @UseGuards(AtGuard /*RolesGuard*/)
   // @Roles(RolesEnum.Admin)
   async updateRole(@Args('id') id: string, @Body('roleId') roleId: number) {
     return await this.usersService.updateRole(+id, +roleId);

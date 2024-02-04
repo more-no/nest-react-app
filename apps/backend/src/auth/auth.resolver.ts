@@ -22,13 +22,13 @@ export class AuthResolver {
   }
 
   @Mutation('logout')
-  // @UseGuards(AtGuard)
+  @UseGuards(AtGuard)
   async logout(@GetUserId() userId: number): Promise<Boolean> {
     return this.authService.logout(userId);
   }
 
   @Mutation('refresh')
-  // @UseGuards(RtGuard)
+  @UseGuards(RtGuard)
   async refreshTokens(
     @GetUserId() userId: number,
     @GetUserRt() refreshToken: string,

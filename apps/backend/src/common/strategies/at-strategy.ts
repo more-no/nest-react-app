@@ -8,7 +8,7 @@ import { JwtPayload } from 'src/graphql';
 
 @Injectable()
 // here passport take care of the validation of the token
-export class AtStrategy extends PassportStrategy(Strategy) {
+export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(config: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
