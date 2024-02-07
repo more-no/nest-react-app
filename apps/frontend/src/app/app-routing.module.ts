@@ -7,10 +7,14 @@ import { ContactComponent } from './contact/contact.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ProductsListComponent } from './products/productsList/productsList.component';
 import { ProductDetailsComponentComponent } from './products/product-details-component/product-details-component.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 const routes: Routes = [
-  // the order of the routes is important  ==> '' must first and ** must be last
+  // the order of the routes is important  ==> '' must be first and ** must be last
   { path: '', component: FirstComponent }, // empty path is taken as homepage
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
   { path: 'second', component: SecondComponent },
   { path: 'wish', component: WishComponent },
   { path: 'contact', component: ContactComponent },

@@ -8,17 +8,30 @@ import { FirstComponent } from './first/first.component';
 import { SecondComponent } from './second/second.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ProductsModule } from './products/products.module';
+import { HttpClientModule } from '@angular/common/http';
+import { GraphQLModule } from './graphql.module';
+import { SignupModule } from './auth/signup/signup.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
-    // AppComponent is the entry point of our Module
     AppComponent,
     FirstComponent,
     SecondComponent,
     NotFoundComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, WishModule, ContactModule, ProductsModule],
   providers: [],
   bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    SignupModule,
+    WishModule,
+    ContactModule,
+    ProductsModule,
+    HttpClientModule,
+    GraphQLModule,
+    AuthModule,
+  ],
 })
 export class AppModule {}
