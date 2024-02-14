@@ -12,7 +12,6 @@ export const GetUserRt = createParamDecorator(
       ctx.refreshToken = token;
     }
 
-    console.log('RT: ', ctx.refreshToken);
     return ctx.refreshToken;
   },
 );

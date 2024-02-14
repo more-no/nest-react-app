@@ -14,6 +14,6 @@ import { TokenInterceptor } from 'src/common/interceptors/token.interceptor';
     }),
     JwtModule.register({}),
   ],
-  providers: [UsersService, UsersResolver, RolesGuard, TokenInterceptor],
+  providers: [UsersService, UsersResolver, RolesGuard],
 })
 export class UsersModule {}
