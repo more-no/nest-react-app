@@ -6,18 +6,16 @@ import { Observable, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root', // this mean is available throughout the entire application
 })
-
 // to be possible to automatically import it, we need the Injectable decorator
+@Injectable()
 export class EventService {
   private subject = new Subject();
 
   emit(eventName: string, payload: any) {
-    // debugger;
     this.subject.next({ eventName, payload });
   }
 
   listen(eventName: string, callback: (event: any) => void) {
-    // debugger;
     this.subject.asObservable().subscribe((nextObj: any) => {
       if (eventName === nextObj.eventName) {
       }

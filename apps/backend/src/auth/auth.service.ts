@@ -12,7 +12,7 @@ import { getTokens, updateRtHash } from 'src/common/utils';
 export class AuthService {
   constructor(private prisma: PrismaService) {}
 
-  async signup(dto: AuthSignupInput): Promise<Tokens> {
+  async signup(dto: AuthSignupInput) {
     const hash = await bcrypt.hash(dto.password, 10);
 
     const existingUser = await this.prisma.user.findFirst({
@@ -72,7 +72,7 @@ export class AuthService {
     return tokens;
   }
 
-  async login(dto: AuthLoginInput): Promise<Tokens> {
+  async login(dto: AuthLoginInput) {
     const user = await this.prisma.user.findUnique({
       where: {
         username: dto.username,
@@ -127,7 +127,7 @@ export class AuthService {
     return tokens;
   }
 
-  async logout(userId: number): Promise<boolean> {
+  async logout(userId: number) {
     const userLoggedOut = await this.prisma.user.updateMany({
       where: {
         id: userId,
@@ -155,7 +155,7 @@ export class AuthService {
     return true;
   }
 
-  async refreshTokens(userId: number, rt: string): Promise<Tokens> {
+  async refreshTokens(userId: number, rt: string) {
     const user = await this.prisma.user.findFirst({
       where: {
         id: userId,

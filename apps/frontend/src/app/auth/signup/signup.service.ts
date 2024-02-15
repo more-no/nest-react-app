@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class SignupService {
-  constructor(private readonly httpClinet: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
   signup();
 }
