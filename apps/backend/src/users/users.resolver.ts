@@ -1,12 +1,12 @@
 import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { UseGuards, UseInterceptors } from '@nestjs/common';
-import { AtGuard } from 'src/common/guards';
-import { RolesGuard } from 'src/common/guards/role.guard';
+import { AtGuard } from '../common/guards';
+import { RolesGuard } from '../common/guards/role.guard';
 import { RolesEnum } from '@prisma/client';
-import { Roles } from 'src/common/decorators';
-import { UpdateUserInput } from 'src/graphql';
-import { TokenInterceptor } from 'src/common/interceptors/token.interceptor';
+import { Roles } from '../common/decorators';
+import { UpdateUserInput } from '../graphql';
+import { TokenInterceptor } from '../common/interceptors/token.interceptor';
 
 @Resolver('User')
 export class UsersResolver {

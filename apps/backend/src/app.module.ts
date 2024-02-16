@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
     PrismaModule,
     AuthModule,
     JwtModule,
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

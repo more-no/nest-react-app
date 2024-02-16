@@ -5,8 +5,8 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { AuthLoginInput, AuthSignupInput, Tokens } from 'src/graphql';
-import { getTokens, updateRtHash } from 'src/common/utils';
+import { AuthLoginInput, AuthSignupInput, Tokens } from '../graphql';
+import { getTokens, updateRtHash } from '../common/utils';
 
 @Injectable()
 export class AuthService {

@@ -27,6 +27,14 @@ export class ConnectRoleInput {
     id: number;
 }
 
+export class CreatePostInput {
+    exampleField?: Nullable<number>;
+}
+
+export class UpdatePostInput {
+    id: number;
+}
+
 export class UpdateUserInput {
     username?: Nullable<string>;
     fullname?: Nullable<string>;
@@ -35,6 +43,10 @@ export class UpdateUserInput {
 
 export abstract class IQuery {
     abstract user(): User | Promise<User>;
+
+    abstract posts(): Nullable<Post>[] | Promise<Nullable<Post>[]>;
+
+    abstract post(id: number): Nullable<Post> | Promise<Nullable<Post>>;
 
     abstract users(): Nullable<User>[] | Promise<Nullable<User>[]>;
 }
@@ -47,6 +59,12 @@ export abstract class IMutation {
     abstract logout(userId: number): boolean | Promise<boolean>;
 
     abstract refresh(userId: number, refreshToken: string): Tokens | Promise<Tokens>;
+
+    abstract createPost(createPostInput: CreatePostInput): Post | Promise<Post>;
+
+    abstract updatePost(updatePostInput: UpdatePostInput): Post | Promise<Post>;
+
+    abstract removePost(id: number): Nullable<Post> | Promise<Nullable<Post>>;
 
     abstract update(id: string, dto: UpdateUserInput): UpdateResult | Promise<UpdateResult>;
 
@@ -74,6 +92,10 @@ export class JwtPayloadWithRt {
     username: string;
     email: string;
     refreshToken: string;
+}
+
+export class Post {
+    exampleField?: Nullable<number>;
 }
 
 export class User {

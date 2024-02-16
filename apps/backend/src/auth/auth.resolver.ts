@@ -1,9 +1,9 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
-import { GetUserRt, GetUserId, Public } from 'src/common/decorators';
-import { AuthLoginInput, AuthSignupInput, Tokens, User } from 'src/graphql';
+import { GetUserRt, GetUserId, Public } from '../common/decorators';
+import { AuthLoginInput, AuthSignupInput, Tokens, User } from '../graphql';
 import { UseGuards } from '@nestjs/common';
-import { AtGuard, RtGuard } from 'src/common/guards';
+import { AtGuard, RtGuard } from '../common/guards';
 
 @Resolver('Auth')
 export class AuthResolver {
