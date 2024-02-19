@@ -38,10 +38,6 @@ export class UsersService {
         },
       });
 
-      if (!userUpdated) {
-        throw new BadRequestException('Could not update');
-      }
-
       return {
         username: userUpdated.username,
         fullname: userUpdated.fullname,

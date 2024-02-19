@@ -42,11 +42,7 @@ describe('UsersResolver', () => {
 
       jest.spyOn(userService, 'update').mockResolvedValue(updatedUser);
 
-      const result = await resolver.update('9', {
-        username: 'tom',
-        fullname: 'Tom Bombadil',
-        bio: 'I am the Bombadil',
-      });
+      const result = await resolver.update('9', updatedUser);
 
       expect(result).toEqual({
         username: 'tom',
