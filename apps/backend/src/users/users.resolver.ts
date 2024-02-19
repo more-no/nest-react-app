@@ -30,13 +30,7 @@ export class UsersResolver {
   @UseInterceptors(TokenInterceptor)
   async userRemove(@Context() context, @Args('id') id: string) {
     const accessToken = context.token;
-    const isDeleted = await this.usersService.userRemove(+id, accessToken);
-
-    if (isDeleted) {
-      return true;
-    } else {
-      throw new Error('Failed to remove user.');
-    }
+    return await this.usersService.userRemove(+id, accessToken);
   }
 
   // Admin endpoints

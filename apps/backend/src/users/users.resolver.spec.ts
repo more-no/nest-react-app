@@ -35,7 +35,6 @@ describe('UsersResolver', () => {
   describe('update', () => {
     it('should update an user', async () => {
       const updatedUser = {
-        id: '9',
         username: 'tom',
         fullname: 'Tom Bombadil',
         bio: 'I am the Bombadil',
@@ -56,23 +55,42 @@ describe('UsersResolver', () => {
       });
     });
   });
-});
 
-//   describe('update', () => {
-//     it('should update an user', () => {
-//       expect(
-//         resolver.update('9', {
-//           username: 'tom',
-//           fullname: 'tom bombadill',
-//           bio: 'im the bombadill',
-//         }),
-//       ).toEqual([
-//         {
-//           username: 'tom',
-//           fullname: 'tom bombadill',
-//           bio: 'im the bombadill',
-//         },
-//       ]);
-//     });
-//   });
-// });
+  describe('remove', () => {
+    it('should delete the user', async () => {
+      const id = '2';
+      const context = { token: 'fakeAccessToken' };
+
+      jest.spyOn(userService, 'userRemove').mockResolvedValue(true);
+
+      const result = await resolver.userRemove(id, context.token);
+
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('adminRemove', () => {
+    it('should delete an user', async () => {
+      const id = '3';
+
+      jest.spyOn(userService, 'adminRemove').mockResolvedValue(+id);
+
+      const result = await resolver.adminRemove(id);
+
+      expect(result).toEqual(+id);
+    });
+  });
+
+  describe('updateRole', () => {
+    it('should update user`s role', async () => {
+      const id = '3';
+      const roleId = '2';
+
+      jest.spyOn(userService, 'updateRole').mockResolvedValue(+roleId);
+
+      const result = await resolver.updateRole(id, roleId);
+
+      expect(result).toEqual(+roleId);
+    });
+  });
+});
