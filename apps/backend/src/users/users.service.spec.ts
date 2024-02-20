@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import {
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 
 describe('UsersService', () => {
@@ -82,9 +83,8 @@ describe('UsersService', () => {
   it('should delete an user and its session', async () => {
     const userId = 3;
     const accessToken = 'fakeAccessToken';
-    const tokenSub = 'tokenSubject';
+    const tokenSub = '3';
 
-    // Mock Prisma session.findFirst to return a valid session
     jest.spyOn(prisma.session, 'findFirst').mockResolvedValue({
       id: 3,
       token: 'fakeAccessToken',
@@ -92,10 +92,8 @@ describe('UsersService', () => {
       user_id: userId,
     });
 
-    // Mock JWTService decode to return the token subject
     jest.spyOn(jwtService, 'decode').mockReturnValue({ sub: tokenSub });
 
-    // Mock Prisma user.deleteMany and session.deleteMany to succeed
     jest.spyOn(prisma.user, 'deleteMany').mockResolvedValue({ count: 1 });
     jest.spyOn(prisma.session, 'deleteMany').mockResolvedValue({ count: 1 });
 
@@ -112,6 +110,42 @@ describe('UsersService', () => {
 
     await expect(service.userRemove(userId, accessToken)).rejects.toThrow(
       NotFoundException,
+    );
+  });
+
+  it('should throw UnauthorizedException if the token does not match', async () => {
+    const userId = 3;
+    const accessToken = 'fakeAccessToken';
+
+    jest.spyOn(prisma.session, 'findFirst').mockResolvedValue({
+      id: 3,
+      token: 'invalidSessionToken',
+      expiryTimestamp: new Date(),
+      user_id: userId,
+    });
+
+    await expect(service.userRemove(userId, accessToken)).rejects.toThrow(
+      UnauthorizedException,
+    );
+  });
+
+  it('should throw InternalServerErrorException if the ID does not exist', async () => {
+    const userId = 3;
+    const accessToken = 'fakeAccessToken';
+    const tokenSub = '3';
+
+    jest.spyOn(prisma.session, 'findFirst').mockResolvedValue({
+      id: 3,
+      token: 'fakeAccessToken',
+      expiryTimestamp: new Date(),
+      user_id: userId,
+    });
+
+    jest.spyOn(jwtService, 'decode').mockReturnValue({ sub: tokenSub });
+    jest.spyOn(prisma.user, 'deleteMany').mockResolvedValue(null);
+
+    await expect(service.userRemove(userId, accessToken)).rejects.toThrow(
+      InternalServerErrorException,
     );
   });
 });
