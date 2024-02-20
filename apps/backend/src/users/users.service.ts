@@ -50,56 +50,25 @@ export class UsersService {
 
   // delete authenticated user and session
   async userRemove(userId: number, accessToken: string): Promise<boolean> {
-    try {
-      const session = await this.prisma.session.findFirst({
-        where: {
-          user_id: userId,
-        },
-      });
+    const session = await this.prisma.session.findFirst({
+      where: {
+        user_id: userId,
+      },
+    });
 
-      if (!session) {
-        throw new NotFoundException('Session not found');
-      }
-
-      if (session.token === accessToken) {
-        const token = await this.jwtService.decode(accessToken);
-
-        const userDeleted = await this.prisma.user.deleteMany({
-          where: { id: token.sub },
-        });
-
-        if (!userDeleted) {
-          throw new InternalServerErrorException('Could not delete the User');
-        }
-
-        const deletedSession = await this.prisma.session.deleteMany({
-          where: { user_id: userId },
-        });
-
-        if (!deletedSession) {
-          throw new InternalServerErrorException('Error during deletion');
-        }
-
-        return true;
-      } else {
-        throw new UnauthorizedException('Unauthorized');
-      }
-    } catch (error) {
-      throw new InternalServerErrorException(
-        `Failed to delete: ${error.message}`,
-      );
+    if (!session) {
+      throw new NotFoundException('Session not found');
     }
-  }
 
-  // delete user by admin
-  async adminRemove(userId: number): Promise<number> {
-    try {
-      const userToDelete = await this.prisma.user.delete({
-        where: { id: userId },
+    if (session.token === accessToken) {
+      const token = await this.jwtService.decode(accessToken);
+
+      const userDeleted = await this.prisma.user.deleteMany({
+        where: { id: token.sub },
       });
 
-      if (!userToDelete) {
-        throw new BadRequestException('Could not delete the User');
+      if (!userDeleted) {
+        throw new InternalServerErrorException('Could not delete the User');
       }
 
       const deletedSession = await this.prisma.session.deleteMany({
@@ -110,45 +79,60 @@ export class UsersService {
         throw new InternalServerErrorException('Error during deletion');
       }
 
-      return userId;
-    } catch (error) {
-      throw new NotFoundException(`Failed to find the user: ${error.message}`);
+      return true;
+    } else {
+      throw new UnauthorizedException('Unauthorized');
     }
+  }
+
+  // delete user by admin
+  async adminRemove(userId: number): Promise<number> {
+    const userToDelete = await this.prisma.user.delete({
+      where: { id: userId },
+    });
+
+    if (!userToDelete) {
+      throw new BadRequestException('Could not delete the User');
+    }
+
+    const deletedSession = await this.prisma.session.deleteMany({
+      where: { user_id: userId },
+    });
+
+    if (!deletedSession) {
+      throw new InternalServerErrorException('Error during deletion');
+    }
+
+    return userId;
   }
 
   // change user role by admin
   async updateRole(userId: number, roleId: number): Promise<number> {
-    try {
-      const user = await this.prisma.user.findUnique({
-        where: { id: userId },
-        include: { user_role: true },
-      });
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: { user_role: true },
+    });
 
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-
-      const userRoleUpdated = await this.prisma.userRole.update({
-        where: {
-          user_id_role_id: {
-            user_id: user.id,
-            role_id: user.user_role[0].role_id,
-          },
-        },
-        data: {
-          role: { connect: { id: roleId } },
-        },
-      });
-
-      if (!userRoleUpdated) {
-        throw new NotFoundException('User not found');
-      }
-
-      return roleId;
-    } catch (error) {
-      throw new InternalServerErrorException(
-        `Failed to update the role: ${error.message}`,
-      );
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
+
+    const userRoleUpdated = await this.prisma.userRole.update({
+      where: {
+        user_id_role_id: {
+          user_id: user.id,
+          role_id: user.user_role[0].role_id,
+        },
+      },
+      data: {
+        role: { connect: { id: roleId } },
+      },
+    });
+
+    if (!userRoleUpdated) {
+      throw new NotFoundException('User not found');
+    }
+
+    return roleId;
   }
 }

@@ -3,7 +3,10 @@ import { UsersService } from './users.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UpdateUserInput } from 'src/graphql';
 import { JwtService } from '@nestjs/jwt';
-import { NotFoundException } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -58,20 +61,12 @@ describe('UsersService', () => {
 
     (prisma.user.update as jest.Mock).mockResolvedValue(expectedResult);
 
-    const result = await service.update(id, dto);
-
-    expect(result).toEqual(expectedResult);
+    expect(await service.update(id, dto)).toEqual(expectedResult);
   });
 
   it('should throw NotFoundException if an error occurs', async () => {
     const id = 3;
     const dto: UpdateUserInput = {
-      username: 'new Username',
-      fullname: 'new Fullname',
-      bio: 'new Bio',
-    };
-
-    const expectedResult = {
       username: 'new Username',
       fullname: 'new Fullname',
       bio: 'new Bio',
@@ -107,5 +102,16 @@ describe('UsersService', () => {
     const result = await service.userRemove(userId, accessToken);
 
     expect(result).toBe(true);
+  });
+
+  it('should throw NotFoundException if session does not exist', async () => {
+    const userId = 3;
+    const accessToken = 'fakeAccessToken';
+
+    (prisma.session.findFirst as jest.Mock).mockResolvedValue(undefined);
+
+    await expect(service.userRemove(userId, accessToken)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 });
