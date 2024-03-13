@@ -28,11 +28,14 @@ export class ConnectRoleInput {
 }
 
 export class CreatePostInput {
-    exampleField?: Nullable<number>;
+    title: string;
+    body: string;
 }
 
 export class UpdatePostInput {
-    id: number;
+    post_id: number;
+    title: string;
+    body: string;
 }
 
 export class UpdateUserInput {
@@ -60,7 +63,7 @@ export abstract class IMutation {
 
     abstract refresh(userId: number, refreshToken: string): Tokens | Promise<Tokens>;
 
-    abstract createPost(createPostInput: CreatePostInput): Post | Promise<Post>;
+    abstract createPost(id: number, createPostInput: CreatePostInput): Post | Promise<Post>;
 
     abstract updatePost(updatePostInput: UpdatePostInput): Post | Promise<Post>;
 
@@ -70,7 +73,7 @@ export abstract class IMutation {
 
     abstract remove(id: string): boolean | Promise<boolean>;
 
-    abstract adminRemove(id: string): string | Promise<string>;
+    abstract adminRemoveUser(id: string): string | Promise<string>;
 
     abstract updateRole(id: string, roleId: number): string | Promise<string>;
 }
@@ -95,7 +98,12 @@ export class JwtPayloadWithRt {
 }
 
 export class Post {
-    exampleField?: Nullable<number>;
+    post_id: number;
+    user_id: number;
+    title: string;
+    body: string;
+    created_at: number;
+    update_at: number;
 }
 
 export class User {

@@ -86,7 +86,7 @@ export class UsersService {
   }
 
   // delete user by admin
-  async adminRemove(userId: number): Promise<number> {
+  async adminRemoveUser(userId: number): Promise<number> {
     const userToDelete = await this.prisma.user.delete({
       where: { id: userId },
     });

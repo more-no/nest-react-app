@@ -5,7 +5,7 @@ type Query {
 type Mutation {
   update(id: ID!, dto: UpdateUserInput!): UpdateResult!
   remove(id: ID!): Boolean!
-  adminRemove(id: ID!): ID!
+  adminRemoveUser(id: ID!): ID!
   updateRole(id: ID!, roleId: Int!): ID!
 }
 

@@ -1,26 +1,85 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class PostsService {
-  create(createPostInput: CreatePostInput) {
-    return 'This action adds a new post';
+  constructor(private prisma: PrismaService) {}
+
+  // findAll() {
+  //   return `This action returns all posts`;
+  // }
+
+  // findOne(id: number) {
+  //   return `This action returns a #${id} post`;
+  // }
+
+  async create(id: number, createPostInput: CreatePostInput) {
+    try {
+      const newPost = await this.prisma.post.create({
+        data: {
+          user_id: id,
+          title: createPostInput.title,
+          body: createPostInput.body,
+        },
+      });
+
+      return {
+        postId: newPost.id,
+        userId: newPost.user_id,
+        title: newPost.title,
+        body: newPost.body,
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        `Failed to create the post: ${error.message}`,
+      );
+    }
   }
 
-  findAll() {
-    return `This action returns all posts`;
+  async update(id: number, updatePostInput: UpdatePostInput) {
+    try {
+      const updatedPost = await this.prisma.post.update({
+        where: {
+          id: updatePostInput.post_id,
+          user_id: id,
+        },
+        data: {
+          title: updatePostInput.title,
+          body: updatePostInput.body,
+        },
+      });
+
+      return {
+        postId: updatedPost.id,
+        userId: updatedPost.user_id,
+        title: updatedPost.title,
+        body: updatedPost.body,
+      };
+    } catch (error) {
+      throw new NotFoundException(`Failed to update user: ${error.message}`);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
-  }
+  async remove(id: number, postId: number) {
+    try {
+      const deletedPost = await this.prisma.post.delete({
+        where: {
+          id: postId,
+          user_id: id,
+        },
+      });
 
-  update(id: number, updatePostInput: UpdatePostInput) {
-    return `This action updates a #${id} post`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+      return {
+        id: deletedPost.id,
+      };
+    } catch (error) {
+      throw new NotFoundException(`Post not found: ${error.message}`);
+    }
   }
 }

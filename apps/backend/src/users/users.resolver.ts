@@ -15,8 +15,11 @@ export class UsersResolver {
   @Mutation('update')
   @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.User, RolesEnum.Editor)
-  async update(@Args('id') id: string, @Args('dto') dto: UpdateUserInput) {
-    const updatedInfo = await this.usersService.update(+id, dto);
+  async update(
+    @Args('id') id: string,
+    @Args('dto') updateUserInput: UpdateUserInput,
+  ) {
+    const updatedInfo = await this.usersService.update(+id, updateUserInput);
     return {
       username: updatedInfo.username,
       fullname: updatedInfo.fullname,
@@ -35,11 +38,11 @@ export class UsersResolver {
 
   // Admin endpoints
 
-  @Mutation('adminRemove')
+  @Mutation('adminRemoveUser')
   @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.Admin)
-  async adminRemove(@Args('id') id: string) {
-    return await this.usersService.adminRemove(+id);
+  async adminRemoveUser(@Args('id') id: string) {
+    return await this.usersService.adminRemoveUser(+id);
   }
 
   @Mutation('updateRole')

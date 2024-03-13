@@ -29,16 +29,25 @@ model User {
   @@map("users")
 }
 
+model Post {
+  id                 Int        @id @default(autoincrement())
+  user_id            Int        @map("user_id")
+  title              String 	  @db.VarChar(40)
+  body               String     @db.VarChar(300)
+  created_at         DateTime   @default(now()) @db.Date
+  updated_at         DateTime   @default(now()) @db.Date
+}
+
 model Session {
-  id              Int      @id @default(autoincrement())
-  token           String   @unique
-  expiryTimestamp DateTime @default(dbgenerated("NOW() + interval '24 hours'")) @map("expiry_timestamp") @db.Timestamp(3)
-  user_id         Int      @map("user_id")
-  user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id              Int           @id @default(autoincrement())
+  token           String        @unique
+  expiryTimestamp DateTime      @default(dbgenerated("NOW() + interval '24 hours'")) @map("expiry_timestamp") @db.Timestamp(3)
+  user_id         Int           @map("user_id")
+  user            User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Role {
-  id          Int        @id @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   role_name   RolesEnum
   description String?
   role        UserRole[]

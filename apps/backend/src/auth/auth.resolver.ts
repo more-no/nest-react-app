@@ -11,14 +11,14 @@ export class AuthResolver {
 
   @Public()
   @Mutation('signup')
-  async signup(@Args('dto') dto: AuthSignupInput): Promise<Tokens> {
-    return this.authService.signup(dto);
+  async signup(@Args('dto') authSignupInput: AuthSignupInput): Promise<Tokens> {
+    return this.authService.signup(authSignupInput);
   }
 
   @Public()
   @Mutation('login')
-  async login(@Args('dto') dto: AuthLoginInput): Promise<Tokens> {
-    return this.authService.login(dto);
+  async login(@Args('dto') authLoginInput: AuthLoginInput): Promise<Tokens> {
+    return this.authService.login(authLoginInput);
   }
 
   @Mutation('logout')

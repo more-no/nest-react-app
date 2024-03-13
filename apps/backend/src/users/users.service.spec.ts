@@ -18,7 +18,6 @@ describe('UsersService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
-        JwtService,
         {
           provide: JwtService,
           useValue: {
