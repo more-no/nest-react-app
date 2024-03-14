@@ -25,16 +25,19 @@ export class UsersService {
   // }
 
   // update user info
-  async update(id: number, dto: UpdateUserInput): Promise<UpdateResult> {
+  async update(
+    id: number,
+    updateUserInput: UpdateUserInput,
+  ): Promise<UpdateResult> {
     try {
       const userUpdated = await this.prisma.user.update({
         where: {
           id: id,
         },
         data: {
-          username: dto.username,
-          fullname: dto.fullname,
-          bio: dto.bio,
+          username: updateUserInput.username,
+          fullname: updateUserInput.fullname,
+          bio: updateUserInput.bio,
         },
       });
 

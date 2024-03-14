@@ -1,5 +1,5 @@
 import { InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 @InputType()
 export class CreatePostInput {

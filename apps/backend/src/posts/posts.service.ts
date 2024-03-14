@@ -19,19 +19,18 @@ export class PostsService {
   //   return `This action returns a #${id} post`;
   // }
 
-  async create(id: number, createPostInput: CreatePostInput) {
+  async createPost(userId: number, createPostInput: CreatePostInput) {
     try {
       const newPost = await this.prisma.post.create({
         data: {
-          user_id: id,
+          user_id: userId,
           title: createPostInput.title,
           body: createPostInput.body,
         },
       });
 
       return {
-        postId: newPost.id,
-        userId: newPost.user_id,
+        post_id: newPost.id,
         title: newPost.title,
         body: newPost.body,
       };
@@ -42,7 +41,7 @@ export class PostsService {
     }
   }
 
-  async update(id: number, updatePostInput: UpdatePostInput) {
+  async updatePost(id: number, updatePostInput: UpdatePostInput) {
     try {
       const updatedPost = await this.prisma.post.update({
         where: {
@@ -56,8 +55,7 @@ export class PostsService {
       });
 
       return {
-        postId: updatedPost.id,
-        userId: updatedPost.user_id,
+        post_id: updatedPost.id,
         title: updatedPost.title,
         body: updatedPost.body,
       };
@@ -66,7 +64,7 @@ export class PostsService {
     }
   }
 
-  async remove(id: number, postId: number) {
+  async removePost(id: number, postId: number) {
     try {
       const deletedPost = await this.prisma.post.delete({
         where: {
@@ -76,7 +74,7 @@ export class PostsService {
       });
 
       return {
-        id: deletedPost.id,
+        post_id: deletedPost.id,
       };
     } catch (error) {
       throw new NotFoundException(`Post not found: ${error.message}`);

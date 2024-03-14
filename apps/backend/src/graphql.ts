@@ -65,9 +65,9 @@ export abstract class IMutation {
 
     abstract createPost(id: number, createPostInput: CreatePostInput): Post | Promise<Post>;
 
-    abstract updatePost(updatePostInput: UpdatePostInput): Post | Promise<Post>;
+    abstract updatePost(id: number, updatePostInput: UpdatePostInput): Post | Promise<Post>;
 
-    abstract removePost(id: number): Nullable<Post> | Promise<Nullable<Post>>;
+    abstract removePost(id: number, postId: number): Nullable<Post> | Promise<Nullable<Post>>;
 
     abstract update(id: string, dto: UpdateUserInput): UpdateResult | Promise<UpdateResult>;
 

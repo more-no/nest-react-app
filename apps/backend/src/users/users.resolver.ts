@@ -17,7 +17,7 @@ export class UsersResolver {
   @Roles(RolesEnum.User, RolesEnum.Editor)
   async update(
     @Args('id') id: string,
-    @Args('dto') updateUserInput: UpdateUserInput,
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ) {
     const updatedInfo = await this.usersService.update(+id, updateUserInput);
     return {

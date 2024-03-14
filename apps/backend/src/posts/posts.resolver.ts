@@ -25,21 +25,27 @@ export class PostsResolver {
   @Mutation('createPost')
   @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.User)
-  create(@Args('id') id: string, createPostInput: CreatePostInput) {
-    return this.postsService.create(+id, createPostInput);
+  create(
+    @Args('id') id: string,
+    @Args('createPostInput') createPostInput: CreatePostInput,
+  ) {
+    return this.postsService.createPost(+id, createPostInput);
   }
 
   @Mutation('updatePost')
   @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.User, RolesEnum.Editor)
-  update(@Args('id') id: string, updatePostInput: UpdatePostInput) {
-    return this.postsService.update(+id, updatePostInput);
+  update(
+    @Args('id') id: string,
+    @Args('updatePostInput') updatePostInput: UpdatePostInput,
+  ) {
+    return this.postsService.updatePost(+id, updatePostInput);
   }
 
   @Mutation('removePost')
   @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.User, RolesEnum.Editor)
-  remove(@Args('id') id: number, postId: number) {
-    return this.postsService.remove(+id, +postId);
+  remove(@Args('id') id: string, @Args('postId') postId: string) {
+    return this.postsService.removePost(+id, +postId);
   }
 }

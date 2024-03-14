@@ -34,8 +34,8 @@ model Post {
   user_id            Int        @map("user_id")
   title              String 	  @db.VarChar(40)
   body               String     @db.VarChar(300)
-  created_at         DateTime   @default(now()) @db.Date
-  updated_at         DateTime   @default(now()) @db.Date
+  created_at         DateTime   @default(now()) @db.Timestamp(3)
+  updated_at         DateTime   @default(now()) @db.Timestamp(3)
 }
 
 model Session {
