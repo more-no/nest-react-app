@@ -1,16 +1,37 @@
-import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { UseGuards, UseInterceptors } from '@nestjs/common';
+import { ParseIntPipe, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AtGuard } from '../common/guards';
 import { RolesGuard } from '../common/guards/role.guard';
 import { RolesEnum } from '@prisma/client';
 import { Roles } from '../common/decorators';
-import { UpdateUserInput } from '../graphql';
+import { CustomRequest, UpdateUserInput, User } from '../graphql';
 import { TokenInterceptor } from '../common/interceptors/token.interceptor';
+import { UserEntity } from './entities/user.entity';
 
 @Resolver('User')
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
+
+  @Query(() => User)
+  @UseGuards(AtGuard, RolesGuard)
+  @Roles(RolesEnum.Admin)
+  async getUsers() {
+    const users = await this.usersService.getUsers();
+    return users.map((user) => new UserEntity(user));
+  }
+
+  @Query(() => User)
+  @UseGuards(AtGuard, RolesGuard)
+  @Roles(RolesEnum.User)
+  @UseInterceptors(TokenInterceptor)
+  async getUserById(
+    @Context() context: CustomRequest,
+    @Args('id', ParseIntPipe) id: number,
+  ) {
+    const accessToken = context.token;
+    return new UserEntity(await this.usersService.getUserById(id, accessToken));
+  }
 
   @Mutation('update')
   @UseGuards(AtGuard, RolesGuard)
@@ -31,9 +52,12 @@ export class UsersResolver {
   @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.User)
   @UseInterceptors(TokenInterceptor)
-  async userRemove(@Context() context, @Args('id') id: string) {
+  async userRemove(
+    @Context() context: CustomRequest,
+    @Args('id', ParseIntPipe) id: number,
+  ) {
     const accessToken = context.token;
-    return await this.usersService.userRemove(+id, accessToken);
+    return await this.usersService.userRemove(id, accessToken);
   }
 
   // Admin endpoints

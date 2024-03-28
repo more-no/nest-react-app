@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { PostsModule } from './posts/posts.module';
+import { GroupPostsModule } from './group-posts/group-posts.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { PostsModule } from './posts/posts.module';
     AuthModule,
     JwtModule,
     PostsModule,
+    GroupPostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

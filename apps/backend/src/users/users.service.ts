@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -7,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { UpdateResult, UpdateUserInput } from 'src/graphql';
+import { UpdateResult, UpdateUserInput, User } from 'src/graphql';
 
 @Injectable()
 export class UsersService {
@@ -16,13 +17,51 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
-  // findAll() {
-  //   return `This action returns all users`;
-  // }
+  async getUsers(): Promise<User[]> {
+    const users = await this.prisma.user.findMany({
+      include: {
+        user_role: {
+          select: {
+            role: {
+              select: {
+                role_name: true,
+              },
+            },
+          },
+        },
+      },
+    });
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} user`;
-  // }
+    if (!users) throw new ForbiddenException('Error retrieving the Users.');
+
+    return users;
+  }
+
+  async getUserById(id: number, accessToken: string): Promise<User> {
+    const token = await this.jwtService.decode(accessToken);
+
+    if (id === token.sub) {
+      const user = await this.prisma.user.findUniqueOrThrow({
+        where: {
+          id: id,
+        },
+        include: {
+          post: true,
+          group_post: {
+            include: {
+              group_post: true,
+            },
+          },
+        },
+      });
+
+      if (!user) throw new NotFoundException('User not found');
+
+      return user;
+    } else {
+      throw new UnauthorizedException('Unauthorized');
+    }
+  }
 
   // update user info
   async update(

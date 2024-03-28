@@ -1,5 +1,8 @@
+scalar Date
+
 type Query {
-  users: [User]!
+  getUsers: [User]!
+  getUserById(id: ID!): User!
 }
 
 type Mutation {
@@ -16,7 +19,7 @@ type User {
   fullname: String
   picture_url: String
   bio: String
-  date_registration: Int
+  date_registration: Date
   password_hash: String
   refresh_token: String
   post_count: Int
@@ -34,4 +37,13 @@ type UpdateResult {
   username: String
   fullname: String
   bio: String
+}
+
+input CustomRequest {
+  headers: RequestHeaders
+  token: String
+}
+
+input RequestHeaders {
+  authorization: String
 }

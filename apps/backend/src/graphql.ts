@@ -27,6 +27,14 @@ export class ConnectRoleInput {
     id: number;
 }
 
+export class CreateGroupPostInput {
+    exampleField?: Nullable<number>;
+}
+
+export class UpdateGroupPostInput {
+    id: number;
+}
+
 export class CreatePostInput {
     title: string;
     body: string;
@@ -44,14 +52,29 @@ export class UpdateUserInput {
     bio?: Nullable<string>;
 }
 
+export class CustomRequest {
+    headers?: Nullable<RequestHeaders>;
+    token?: Nullable<string>;
+}
+
+export class RequestHeaders {
+    authorization?: Nullable<string>;
+}
+
 export abstract class IQuery {
     abstract user(): User | Promise<User>;
+
+    abstract groupPosts(): Nullable<GroupPost>[] | Promise<Nullable<GroupPost>[]>;
+
+    abstract groupPost(id: number): Nullable<GroupPost> | Promise<Nullable<GroupPost>>;
 
     abstract posts(): Nullable<Post>[] | Promise<Nullable<Post>[]>;
 
     abstract post(id: number): Nullable<Post> | Promise<Nullable<Post>>;
 
-    abstract users(): Nullable<User>[] | Promise<Nullable<User>[]>;
+    abstract getUsers(): Nullable<User>[] | Promise<Nullable<User>[]>;
+
+    abstract getUserById(id: string): User | Promise<User>;
 }
 
 export abstract class IMutation {
@@ -62,6 +85,12 @@ export abstract class IMutation {
     abstract logout(userId: number): boolean | Promise<boolean>;
 
     abstract refresh(userId: number, refreshToken: string): Tokens | Promise<Tokens>;
+
+    abstract createGroupPost(createGroupPostInput: CreateGroupPostInput): GroupPost | Promise<GroupPost>;
+
+    abstract updateGroupPost(updateGroupPostInput: UpdateGroupPostInput): GroupPost | Promise<GroupPost>;
+
+    abstract removeGroupPost(id: number): Nullable<GroupPost> | Promise<Nullable<GroupPost>>;
 
     abstract createPost(id: number, createPostInput: CreatePostInput): Post | Promise<Post>;
 
@@ -97,6 +126,10 @@ export class JwtPayloadWithRt {
     refreshToken: string;
 }
 
+export class GroupPost {
+    exampleField?: Nullable<number>;
+}
+
 export class Post {
     post_id: number;
     user_id: number;
@@ -113,7 +146,7 @@ export class User {
     fullname?: Nullable<string>;
     picture_url?: Nullable<string>;
     bio?: Nullable<string>;
-    date_registration?: Nullable<number>;
+    date_registration?: Nullable<Date>;
     password_hash?: Nullable<string>;
     refresh_token?: Nullable<string>;
     post_count?: Nullable<number>;

@@ -12,7 +12,7 @@ import { getTokens, updateRtHash } from '../common/utils';
 export class AuthService {
   constructor(private prisma: PrismaService) {}
 
-  async signup(dto: AuthSignupInput) {
+  async signup(dto: AuthSignupInput): Promise<Tokens> {
     const hash = await bcrypt.hash(dto.password, 10);
 
     const existingUser = await this.prisma.user.findFirst({
@@ -57,9 +57,13 @@ export class AuthService {
     );
 
     // Create a session for the new user
+    const expiryTime = new Date();
+    expiryTime.setHours(expiryTime.getHours() + 24);
+
     const session = await this.prisma.session.create({
       data: {
         token: tokens.access_token,
+        expiry_timestamp: expiryTime,
         user_id: newUser.id,
       },
     });
@@ -72,7 +76,7 @@ export class AuthService {
     return tokens;
   }
 
-  async login(dto: AuthLoginInput) {
+  async login(dto: AuthLoginInput): Promise<Tokens> {
     const user = await this.prisma.user.findUnique({
       where: {
         username: dto.username,
@@ -110,10 +114,14 @@ export class AuthService {
       return tokens;
     }
 
+    const expiryTime = new Date();
+    expiryTime.setHours(expiryTime.getHours() + 24);
+
     if (!existingSession) {
       const newSession = await this.prisma.session.create({
         data: {
           user_id: user.id,
+          expiry_timestamp: expiryTime,
           token: tokens.access_token,
         },
       });
@@ -127,7 +135,7 @@ export class AuthService {
     return tokens;
   }
 
-  async logout(userId: number) {
+  async logout(userId: number): Promise<Boolean> {
     const userLoggedOut = await this.prisma.user.updateMany({
       where: {
         id: userId,
@@ -155,7 +163,7 @@ export class AuthService {
     return true;
   }
 
-  async refreshTokens(userId: number, rt: string) {
+  async refreshTokens(userId: number, rt: string): Promise<Tokens> {
     const user = await this.prisma.user.findFirst({
       where: {
         id: userId,

@@ -1,0 +1,24 @@
+type GroupPost {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateGroupPostInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateGroupPostInput {
+  id: Int!
+}
+
+type Query {
+  groupPosts: [GroupPost]!
+  groupPost(id: Int!): GroupPost
+}
+
+type Mutation {
+  createGroupPost(createGroupPostInput: CreateGroupPostInput!): GroupPost!
+  updateGroupPost(updateGroupPostInput: UpdateGroupPostInput!): GroupPost!
+  removeGroupPost(id: Int!): GroupPost
+}
