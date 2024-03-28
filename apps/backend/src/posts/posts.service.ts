@@ -6,18 +6,29 @@ import {
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { PrismaService } from '../../prisma/prisma.service';
+import { Post } from '@prisma/client';
 
 @Injectable()
 export class PostsService {
   constructor(private prisma: PrismaService) {}
 
-  // findAll() {
-  //   return `This action returns all posts`;
-  // }
+  async getPosts(): Promise<Post[]> {
+    const allPosts = await this.prisma.post.findMany();
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} post`;
-  // }
+    if (!allPosts) throw new BadRequestException('Error retrieving the Posts');
+
+    return allPosts;
+  }
+
+  async getPostById(id: number): Promise<Post> {
+    const post = await this.prisma.post.findFirstOrThrow({
+      where: {
+        id: id,
+      },
+    });
+
+    return post;
+  }
 
   async createPost(userId: number, createPostInput: CreatePostInput) {
     try {

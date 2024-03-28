@@ -1,51 +1,54 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PostsService } from './posts.service';
-import { CreatePostInput } from './dto/create-post.input';
-import { UpdatePostInput } from './dto/update-post.input';
-import { UseGuards } from '@nestjs/common';
+import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { Roles } from '../common/decorators';
 import { AtGuard } from '../common/guards';
 import { RolesGuard } from '../common/guards/role.guard';
 import { RolesEnum } from '@prisma/client';
+import { CreatePostInput, UpdatePostInput } from './dto';
+import { Post } from 'src/graphql';
 
+@UseGuards(AtGuard, RolesGuard)
 @Resolver('Post')
 export class PostsResolver {
   constructor(private readonly postsService: PostsService) {}
 
-  // @Query('posts')
-  // findAll() {
-  //   return this.postsService.findAll();
-  // }
+  @Query(() => Post)
+  @Roles(RolesEnum.User, RolesEnum.Editor, RolesEnum.Admin)
+  async getPosts() {
+    return this.postsService.getPosts();
+  }
 
-  // @Query('post')
-  // findOne(@Args('id') id: number) {
-  //   return this.postsService.findOne(id);
-  // }
+  @Query(() => Post)
+  @Roles(RolesEnum.User, RolesEnum.Editor, RolesEnum.Admin)
+  async getPostById(@Args('id', ParseIntPipe) id: number) {
+    return this.postsService.getPostById(id);
+  }
 
   @Mutation('createPost')
-  @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.User)
-  create(
-    @Args('id') id: string,
+  async create(
+    @Args('id', ParseIntPipe) id: number,
     @Args('createPostInput') createPostInput: CreatePostInput,
   ) {
-    return this.postsService.createPost(+id, createPostInput);
+    return this.postsService.createPost(id, createPostInput);
   }
 
   @Mutation('updatePost')
-  @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.User, RolesEnum.Editor)
-  update(
-    @Args('id') id: string,
+  async update(
+    @Args('id', ParseIntPipe) id: number,
     @Args('updatePostInput') updatePostInput: UpdatePostInput,
   ) {
-    return this.postsService.updatePost(+id, updatePostInput);
+    return this.postsService.updatePost(id, updatePostInput);
   }
 
   @Mutation('removePost')
-  @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.User, RolesEnum.Editor)
-  remove(@Args('id') id: string, @Args('postId') postId: string) {
-    return this.postsService.removePost(+id, +postId);
+  async remove(
+    @Args('id', ParseIntPipe) id: number,
+    @Args('postId', ParseIntPipe) postId: number,
+  ) {
+    return this.postsService.removePost(id, postId);
   }
 }

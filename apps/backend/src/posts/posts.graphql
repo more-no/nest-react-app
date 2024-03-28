@@ -1,6 +1,8 @@
+scalar Date
+
 type Query {
-  posts: [Post]!
-  post(id: Int!): Post
+  getPosts: [Post]!
+  getPostById(id: Int!): Post
 }
 
 type Mutation {
@@ -14,8 +16,8 @@ type Post {
   user_id: Int!
   title: String!
   body: String!
-  created_at: Int!
-  update_at: Int!
+  created_at: Date!
+  update_at: Date!
 }
 
 input CreatePostInput {

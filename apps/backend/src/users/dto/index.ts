@@ -1,1 +1,3 @@
-export * from './update-user.input';
+export * from './updateUser.input';
+export * from './personalDataUser.dto';
+export * from './customRequestUser.dto';

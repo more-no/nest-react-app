@@ -1,24 +1,39 @@
-type GroupPost {
-  # Example field (placeholder)
-  exampleField: Int
-}
-
-input CreateGroupPostInput {
-  # Example field (placeholder)
-  exampleField: Int
-}
-
-input UpdateGroupPostInput {
-  id: Int!
-}
-
 type Query {
-  groupPosts: [GroupPost]!
-  groupPost(id: Int!): GroupPost
+  getGroupPosts: [GroupPost]!
+  getGroupPostById(id: Int!): GroupPost
 }
 
 type Mutation {
   createGroupPost(createGroupPostInput: CreateGroupPostInput!): GroupPost!
-  updateGroupPost(updateGroupPostInput: UpdateGroupPostInput!): GroupPost!
-  removeGroupPost(id: Int!): GroupPost
+  updateGroupPost(
+    userId: Int!
+    postId: Int!
+    updateGroupPostInput: UpdateGroupPostInput!
+  ): GroupPost!
+  removeGroupPost(userId: Int!, postId: Int!, userIds: [Int!]!): GroupPost!
+}
+
+type GroupPost {
+  title: String!
+  body: String!
+  created_at: Date!
+  updated_at: Date!
+  users: [User!]!
+}
+
+type User {
+  id: Int!
+  group_post: [GroupPost!]!
+}
+
+input CreateGroupPostInput {
+  title: String!
+  body: String!
+  userIds: [Int!]!
+}
+
+input UpdateGroupPostInput {
+  title: String!
+  body: String!
+  userIds: [Int!]!
 }

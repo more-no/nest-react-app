@@ -8,7 +8,8 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { UpdateResult, UpdateUserInput, User } from 'src/graphql';
+import { User } from '@prisma/client';
+import { UpdateUserInput } from './dto';
 
 @Injectable()
 export class UsersService {
@@ -67,7 +68,7 @@ export class UsersService {
   async update(
     id: number,
     updateUserInput: UpdateUserInput,
-  ): Promise<UpdateResult> {
+  ): Promise<UpdateUserInput> {
     try {
       const userUpdated = await this.prisma.user.update({
         where: {

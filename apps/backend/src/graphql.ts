@@ -28,11 +28,15 @@ export class ConnectRoleInput {
 }
 
 export class CreateGroupPostInput {
-    exampleField?: Nullable<number>;
+    title: string;
+    body: string;
+    userIds: number[];
 }
 
 export class UpdateGroupPostInput {
-    id: number;
+    title: string;
+    body: string;
+    userIds: number[];
 }
 
 export class CreatePostInput {
@@ -52,25 +56,16 @@ export class UpdateUserInput {
     bio?: Nullable<string>;
 }
 
-export class CustomRequest {
-    headers?: Nullable<RequestHeaders>;
-    token?: Nullable<string>;
-}
-
-export class RequestHeaders {
-    authorization?: Nullable<string>;
-}
-
 export abstract class IQuery {
     abstract user(): User | Promise<User>;
 
-    abstract groupPosts(): Nullable<GroupPost>[] | Promise<Nullable<GroupPost>[]>;
+    abstract getGroupPosts(): Nullable<GroupPost>[] | Promise<Nullable<GroupPost>[]>;
 
-    abstract groupPost(id: number): Nullable<GroupPost> | Promise<Nullable<GroupPost>>;
+    abstract getGroupPostById(id: number): Nullable<GroupPost> | Promise<Nullable<GroupPost>>;
 
-    abstract posts(): Nullable<Post>[] | Promise<Nullable<Post>[]>;
+    abstract getPosts(): Nullable<Post>[] | Promise<Nullable<Post>[]>;
 
-    abstract post(id: number): Nullable<Post> | Promise<Nullable<Post>>;
+    abstract getPostById(id: number): Nullable<Post> | Promise<Nullable<Post>>;
 
     abstract getUsers(): Nullable<User>[] | Promise<Nullable<User>[]>;
 
@@ -88,9 +83,9 @@ export abstract class IMutation {
 
     abstract createGroupPost(createGroupPostInput: CreateGroupPostInput): GroupPost | Promise<GroupPost>;
 
-    abstract updateGroupPost(updateGroupPostInput: UpdateGroupPostInput): GroupPost | Promise<GroupPost>;
+    abstract updateGroupPost(userId: number, postId: number, updateGroupPostInput: UpdateGroupPostInput): GroupPost | Promise<GroupPost>;
 
-    abstract removeGroupPost(id: number): Nullable<GroupPost> | Promise<Nullable<GroupPost>>;
+    abstract removeGroupPost(userId: number, postId: number, userIds: number[]): GroupPost | Promise<GroupPost>;
 
     abstract createPost(id: number, createPostInput: CreatePostInput): Post | Promise<Post>;
 
@@ -127,20 +122,16 @@ export class JwtPayloadWithRt {
 }
 
 export class GroupPost {
-    exampleField?: Nullable<number>;
-}
-
-export class Post {
-    post_id: number;
-    user_id: number;
     title: string;
     body: string;
-    created_at: number;
-    update_at: number;
+    created_at: Date;
+    updated_at: Date;
+    users: User[];
 }
 
 export class User {
     id: number;
+    group_post: GroupPost[];
     username: string;
     email?: Nullable<string>;
     fullname?: Nullable<string>;
@@ -152,6 +143,15 @@ export class User {
     post_count?: Nullable<number>;
     comment_count?: Nullable<number>;
     user_subscriptions?: Nullable<number>;
+}
+
+export class Post {
+    post_id: number;
+    user_id: number;
+    title: string;
+    body: string;
+    created_at: Date;
+    update_at: Date;
 }
 
 export class UpdateResult {

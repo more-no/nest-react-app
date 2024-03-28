@@ -38,12 +38,3 @@ type UpdateResult {
   fullname: String
   bio: String
 }
-
-input CustomRequest {
-  headers: RequestHeaders
-  token: String
-}
-
-input RequestHeaders {
-  authorization: String
-}

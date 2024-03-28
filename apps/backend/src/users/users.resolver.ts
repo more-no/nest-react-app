@@ -5,16 +5,21 @@ import { AtGuard } from '../common/guards';
 import { RolesGuard } from '../common/guards/role.guard';
 import { RolesEnum } from '@prisma/client';
 import { Roles } from '../common/decorators';
-import { CustomRequest, UpdateUserInput, User } from '../graphql';
 import { TokenInterceptor } from '../common/interceptors/token.interceptor';
 import { UserEntity } from './entities/user.entity';
+import { PrismaService } from 'prisma/prisma.service';
+import { User } from 'src/graphql';
+import { CustomRequestUserDto, UpdateUserInput } from './dto';
 
+@UseGuards(AtGuard, RolesGuard)
 @Resolver('User')
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private prisma: PrismaService,
+  ) {}
 
   @Query(() => User)
-  @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.Admin)
   async getUsers() {
     const users = await this.usersService.getUsers();
@@ -22,11 +27,10 @@ export class UsersResolver {
   }
 
   @Query(() => User)
-  @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.User)
   @UseInterceptors(TokenInterceptor)
   async getUserById(
-    @Context() context: CustomRequest,
+    @Context() context: CustomRequestUserDto,
     @Args('id', ParseIntPipe) id: number,
   ) {
     const accessToken = context.token;
@@ -34,13 +38,12 @@ export class UsersResolver {
   }
 
   @Mutation('update')
-  @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.User, RolesEnum.Editor)
   async update(
-    @Args('id') id: string,
+    @Args('id', ParseIntPipe) id: number,
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ) {
-    const updatedInfo = await this.usersService.update(+id, updateUserInput);
+    const updatedInfo = await this.usersService.update(id, updateUserInput);
     return {
       username: updatedInfo.username,
       fullname: updatedInfo.fullname,
@@ -49,11 +52,10 @@ export class UsersResolver {
   }
 
   @Mutation('remove')
-  @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.User)
   @UseInterceptors(TokenInterceptor)
   async userRemove(
-    @Context() context: CustomRequest,
+    @Context() context: CustomRequestUserDto,
     @Args('id', ParseIntPipe) id: number,
   ) {
     const accessToken = context.token;
@@ -63,16 +65,17 @@ export class UsersResolver {
   // Admin endpoints
 
   @Mutation('adminRemoveUser')
-  @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.Admin)
-  async adminRemoveUser(@Args('id') id: string) {
-    return await this.usersService.adminRemoveUser(+id);
+  async adminRemoveUser(@Args('id', ParseIntPipe) id: number) {
+    return await this.usersService.adminRemoveUser(id);
   }
 
   @Mutation('updateRole')
-  @UseGuards(AtGuard, RolesGuard)
   @Roles(RolesEnum.Admin)
-  async updateRole(@Args('id') id: string, @Args('roleId') roleId: string) {
-    return await this.usersService.updateRole(+id, +roleId);
+  async updateRole(
+    @Args('id', ParseIntPipe) id: number,
+    @Args('roleId', ParseIntPipe) roleId: number,
+  ) {
+    return await this.usersService.updateRole(id, roleId);
   }
 }

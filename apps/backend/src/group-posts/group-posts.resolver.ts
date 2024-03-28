@@ -1,34 +1,55 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { GroupPostsService } from './group-posts.service';
-import { CreateGroupPostInput } from './dto/create-group-post.input';
-import { UpdateGroupPostInput } from './dto/update-group-post.input';
+import { CreateGroupPostInput, UpdateGroupPostInput } from './dto';
+import { ParseIntPipe } from '@nestjs/common';
+import { GroupPost } from 'src/graphql';
 
 @Resolver('GroupPost')
 export class GroupPostsResolver {
   constructor(private readonly groupPostsService: GroupPostsService) {}
 
+  @Query(() => GroupPost)
+  async getGroupPosts() {
+    return this.groupPostsService.getGroupPosts();
+  }
+
+  @Query(() => GroupPost)
+  getGroupPostById(@Args('id', ParseIntPipe) id: number) {
+    return this.groupPostsService.getGroupPostById(id);
+  }
+
   @Mutation('createGroupPost')
-  create(@Args('createGroupPostInput') createGroupPostInput: CreateGroupPostInput) {
-    return this.groupPostsService.create(createGroupPostInput);
-  }
-
-  @Query('groupPosts')
-  findAll() {
-    return this.groupPostsService.findAll();
-  }
-
-  @Query('groupPost')
-  findOne(@Args('id') id: number) {
-    return this.groupPostsService.findOne(id);
+  async createGroupPost(
+    @Args('createGroupPostInput')
+    { userIds, ...createGroupPostInput }: CreateGroupPostInput,
+  ) {
+    return this.groupPostsService.createGroupPost(
+      userIds,
+      createGroupPostInput,
+    );
   }
 
   @Mutation('updateGroupPost')
-  update(@Args('updateGroupPostInput') updateGroupPostInput: UpdateGroupPostInput) {
-    return this.groupPostsService.update(updateGroupPostInput.id, updateGroupPostInput);
+  async updateGroupPost(
+    @Args('userId', ParseIntPipe) userId: number,
+    @Args('postId', ParseIntPipe) postId: number,
+    @Args('updateGroupPostInput') updateGroupPostInput: UpdateGroupPostInput,
+  ) {
+    return this.groupPostsService.updateGroupPost(
+      userId,
+      postId,
+      updateGroupPostInput.userIds,
+      updateGroupPostInput,
+    );
   }
 
   @Mutation('removeGroupPost')
-  remove(@Args('id') id: number) {
-    return this.groupPostsService.remove(id);
+  async removeGroupPost(
+    @Args('userId', ParseIntPipe) userId: number,
+    @Args('postId', ParseIntPipe) postId: number,
+    @Args('userIds') userIds: number[],
+  ) {
+    console.log('DATA: ', userId, postId, userIds);
+    return this.groupPostsService.removeGroupPost(userId, postId, userIds);
   }
 }
