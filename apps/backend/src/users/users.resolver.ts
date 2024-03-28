@@ -1,6 +1,11 @@
 import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { ParseIntPipe, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  BadRequestException,
+  ParseIntPipe,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AtGuard } from '../common/guards';
 import { RolesGuard } from '../common/guards/role.guard';
 import { RolesEnum } from '@prisma/client';
@@ -37,13 +42,13 @@ export class UsersResolver {
     return new UserEntity(await this.usersService.getUserById(id, accessToken));
   }
 
-  @Mutation('update')
+  @Mutation('userUpdate')
   @Roles(RolesEnum.User, RolesEnum.Editor)
-  async update(
+  async userUpdate(
     @Args('id', ParseIntPipe) id: number,
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ) {
-    const updatedInfo = await this.usersService.update(id, updateUserInput);
+    const updatedInfo = await this.usersService.userUpdate(id, updateUserInput);
     return {
       username: updatedInfo.username,
       fullname: updatedInfo.fullname,
@@ -51,7 +56,7 @@ export class UsersResolver {
     };
   }
 
-  @Mutation('remove')
+  @Mutation('userRemove')
   @Roles(RolesEnum.User)
   @UseInterceptors(TokenInterceptor)
   async userRemove(

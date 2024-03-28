@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { UpdateUserInput } from './dto';
 
 @Injectable()
@@ -65,10 +65,10 @@ export class UsersService {
   }
 
   // update user info
-  async update(
+  async userUpdate(
     id: number,
     updateUserInput: UpdateUserInput,
-  ): Promise<UpdateUserInput> {
+  ): Promise<Prisma.UserUpdateWithoutUser_roleInput> {
     try {
       const userUpdated = await this.prisma.user.update({
         where: {

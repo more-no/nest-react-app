@@ -51,7 +51,7 @@ export class UpdatePostInput {
 }
 
 export class UpdateUserInput {
-    username?: Nullable<string>;
+    username: string;
     fullname?: Nullable<string>;
     bio?: Nullable<string>;
 }
@@ -93,9 +93,9 @@ export abstract class IMutation {
 
     abstract removePost(id: number, postId: number): Nullable<Post> | Promise<Nullable<Post>>;
 
-    abstract update(id: string, dto: UpdateUserInput): UpdateResult | Promise<UpdateResult>;
+    abstract userUpdate(id: string, updateUserInput: UpdateUserInput): User | Promise<User>;
 
-    abstract remove(id: string): boolean | Promise<boolean>;
+    abstract userRemove(id: string): boolean | Promise<boolean>;
 
     abstract adminRemoveUser(id: string): string | Promise<string>;
 
@@ -152,12 +152,6 @@ export class Post {
     body: string;
     created_at: Date;
     update_at: Date;
-}
-
-export class UpdateResult {
-    username?: Nullable<string>;
-    fullname?: Nullable<string>;
-    bio?: Nullable<string>;
 }
 
 type Nullable<T> = T | null;
