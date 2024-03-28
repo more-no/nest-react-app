@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 
 describe('UsersResolver', () => {
   let resolver: UsersResolver;
-  let userService: UsersService;
+  let service: UsersService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,7 +25,7 @@ describe('UsersResolver', () => {
     }).compile();
 
     resolver = module.get<UsersResolver>(UsersResolver);
-    userService = module.get<UsersService>(UsersService);
+    service = module.get<UsersService>(UsersService);
   });
 
   it('should be defined', () => {
@@ -40,7 +40,7 @@ describe('UsersResolver', () => {
         bio: 'I am the Bombadil',
       };
 
-      jest.spyOn(userService, 'update').mockResolvedValue(updatedUser);
+      jest.spyOn(service, 'update').mockResolvedValue(updatedUser);
 
       const result = await resolver.update('9', updatedUser);
 
@@ -57,7 +57,7 @@ describe('UsersResolver', () => {
       const id = '2';
       const context = { token: 'fakeAccessToken' };
 
-      jest.spyOn(userService, 'userRemove').mockResolvedValue(true);
+      jest.spyOn(service, 'userRemove').mockResolvedValue(true);
 
       const result = await resolver.userRemove(id, context.token);
 
@@ -69,9 +69,9 @@ describe('UsersResolver', () => {
     it('should delete an user', async () => {
       const id = '3';
 
-      jest.spyOn(userService, 'adminRemove').mockResolvedValue(+id);
+      jest.spyOn(service, 'adminRemoveUser').mockResolvedValue(+id);
 
-      const result = await resolver.adminRemove(id);
+      const result = await resolver.adminRemoveUser(id);
 
       expect(result).toEqual(+id);
     });
@@ -82,7 +82,7 @@ describe('UsersResolver', () => {
       const id = '3';
       const roleId = '2';
 
-      jest.spyOn(userService, 'updateRole').mockResolvedValue(+roleId);
+      jest.spyOn(service, 'updateRole').mockResolvedValue(+roleId);
 
       const result = await resolver.updateRole(id, roleId);
 

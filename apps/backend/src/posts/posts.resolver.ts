@@ -3,7 +3,7 @@ import { PostsService } from './posts.service';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { UseGuards } from '@nestjs/common';
-import { Roles } from 'src/common/decorators';
+import { Roles } from '../common/decorators';
 import { AtGuard } from '../common/guards';
 import { RolesGuard } from '../common/guards/role.guard';
 import { RolesEnum } from '@prisma/client';

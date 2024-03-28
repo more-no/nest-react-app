@@ -12,7 +12,7 @@ import {
 describe('UsersService', () => {
   let service: UsersService;
   let prisma: PrismaService;
-  let jwtService: JwtService;
+  let jwt: JwtService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -42,7 +42,7 @@ describe('UsersService', () => {
 
     service = module.get<UsersService>(UsersService);
     prisma = module.get<PrismaService>(PrismaService);
-    jwtService = module.get<JwtService>(JwtService);
+    jwt = module.get<JwtService>(JwtService);
   });
 
   it('should update user info', async () => {
@@ -91,7 +91,7 @@ describe('UsersService', () => {
       user_id: userId,
     });
 
-    jest.spyOn(jwtService, 'decode').mockReturnValue({ sub: tokenSub });
+    jest.spyOn(jwt, 'decode').mockReturnValue({ sub: tokenSub });
 
     jest.spyOn(prisma.user, 'deleteMany').mockResolvedValue({ count: 1 });
     jest.spyOn(prisma.session, 'deleteMany').mockResolvedValue({ count: 1 });
@@ -140,7 +140,7 @@ describe('UsersService', () => {
       user_id: userId,
     });
 
-    jest.spyOn(jwtService, 'decode').mockReturnValue({ sub: tokenSub });
+    jest.spyOn(jwt, 'decode').mockReturnValue({ sub: tokenSub });
     jest.spyOn(prisma.user, 'deleteMany').mockResolvedValue(null);
 
     await expect(service.userRemove(userId, accessToken)).rejects.toThrow(
