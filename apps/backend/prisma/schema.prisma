@@ -52,11 +52,11 @@ model Post {
 }
 
 model GroupPost {
-  id                 Int        @id @default(autoincrement())
-  title              String     @db.VarChar(30)
-  body               String     @db.VarChar(300)
-  created_at         DateTime   @default(now()) @db.Timestamp(3)
-  updated_at         DateTime   @default(now()) @db.Timestamp(3) @updatedAt
+  id                 Int                @id @default(autoincrement())
+  title              String             @db.VarChar(30)
+  body               String             @db.VarChar(300)
+  created_at         DateTime           @default(now()) @db.Timestamp(3)
+  updated_at         DateTime           @default(now()) @db.Timestamp(3) @updatedAt
   user               UserOnGroupPost[]
 }
 

@@ -1,11 +1,6 @@
 import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import {
-  BadRequestException,
-  ParseIntPipe,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
+import { ParseIntPipe, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AtGuard } from '../common/guards';
 import { RolesGuard } from '../common/guards/role.guard';
 import { RolesEnum } from '@prisma/client';
