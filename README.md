@@ -9,6 +9,7 @@
 - Prisma
 - GraphQL
 - Jest
+- Json Web Tokens
 
 ## Setup instructions
 
