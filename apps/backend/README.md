@@ -87,5 +87,6 @@ pnpm prisma studio
 
 #### <http://localhost:5555/>
 
+### Apollo Server
 
-#### <http://localhost:3000/api-json>
+#### <http://localhost:3000/graphql>
