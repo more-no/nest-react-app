@@ -87,10 +87,5 @@ pnpm prisma studio
 
 #### <http://localhost:5555/>
 
-### Swagger UI
-
-#### <http://localhost:3000/api>
-
-### Swagger JSON
 
 #### <http://localhost:3000/api-json>
